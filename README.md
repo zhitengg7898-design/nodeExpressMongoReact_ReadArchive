@@ -1,6 +1,6 @@
 # 📚 ReadArchive — Community Reading Archive
 
-> A community-driven archive for books, PDFs, and articles where users can search by title, view descriptions, and access useful resource links. Registered users can save favorites and organize them into collections.
+> A community-driven archive for books and articles where users can search by title, view descriptions, and access useful resource links. Registered users can contribute entries, save favorites, and organize them into collections.
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-2563EB?style=for-the-badge)](https://nodeexpressmongoreact-readarchive.onrender.com)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/zhitengg7898-design/nodeExpressMongoReact_ReadArchive)
@@ -10,7 +10,7 @@
 ## 👤 Authors
 
 | Field         | Student 1                                     | Student 2                                                     |
-| ------------- | --------------------------------------------- | ------------------------------------------------------------- |
+| ------------- | --------------------------------------------- | ------------------------------------------------------------ |
 | **Name**      | Smitkumar Jayendrakumar Velani                | Zhiteng Guo                                                   |
 | **Email**     | velanismitkumar@gmail.com                     | guo.zhit@northeastern.edu                                     |
 | **GitHub**    | [Smit-Velani](https://github.com/Smit-Velani) | [zhitengg7898-design](https://github.com/zhitengg7898-design) |
@@ -51,13 +51,14 @@ ReadArchive is a full-stack reading archive platform built with Node.js, Express
 - Search books and articles by title, author, or keyword
 - Filter by type (books / articles) with paginated "Load More"
 - View entry details and resource links (free PDFs, purchase pages)
-- Submit, edit, and delete entries — full CRUD
+- Submit new entries via a form
+- Delete entries you submitted
 - Text-based fallback covers for entries without images
 
 **Favorites & Collections (Zhiteng Guo)**
 
 - Save entries to a personal favorites list
-- Create, rename, and delete named collections — full CRUD
+- Create, rename, and delete named collections
 - Session-based authentication with Passport.js
 
 **Technical**
@@ -232,13 +233,13 @@ The database is seeded with 1000+ synthetic records.
 
 ## 🤖 GenAI Tools
 
-| Tool   | Version                 | Usage                                                      |
-| ------ | ----------------------- | ---------------------------------------------------------- |
-| Claude | claude-opus (Anthropic) | Frontend development assistance, documentation, deployment |
+| Tool   | Provider  | Usage                                                      |
+| ------ | --------- | --------------------------------------------------------- |
+| Claude | Anthropic | Frontend development assistance, documentation, deployment |
 
 **How it was used:**
 
-- **Frontend (React)** — Claude assisted in building the React components (Home, BookDetail, BookCard, Navbar, Login, Register, Favorites, Collections), the API client, and the auth context, with explanation of each file
+- **Frontend (React)** — Claude assisted in building the React components (Home, BookDetail, BookCard, Navbar, Login, Register, Favorites, Collections, SubmitEntry), the API client, and the auth context, with explanation of each file
 - **README & Design Document** — Claude helped structure the documentation and wireframes
 - **Debugging & Deployment** — Claude assisted troubleshooting the MongoDB Atlas connection and Render deployment configuration
 
