@@ -266,6 +266,13 @@ The full design document including project description, user personas, user stor
 
 ---
 
+## 🎤 Presentation
+
+📊 [View the project slides](https://docs.google.com/presentation/d/1ZNfEQ9SBFo-LG8-YNbBElUfMsbKZkHrk/edit?usp=sharing)
+
+
+---
+
 <p align="center">
   Built by <strong>Smitkumar Jayendrakumar Velani</strong> and <strong>Zhiteng Guo</strong> &middot; CS5610 Web Development &middot; Northeastern University &middot; July 2026
 </p>
