@@ -2,15 +2,16 @@
 
 > A community-driven archive for books and articles where users can search by title, view descriptions, and access useful resource links. Registered users can contribute entries, save favorites, and organize them into collections.
 
-[![Live Demo][(https://img.shields.io/badge/Live%20Demo-Visit%20Site-2563EB?style=for-the-badge)](https://youtu.be/IrVrHrNl4Fs)](https://nodeexpressmongoreact-readarchive.onrender.com)]
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-2563EB?style=for-the-badge)](https://nodeexpressmongoreact-readarchive.onrender.com)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/zhitengg7898-design/nodeExpressMongoReact_ReadArchive)
+
 
 ---
 
 ## 👤 Authors
 
 | Field         | Student 1                                     | Student 2                                                     |
-| ------------- | --------------------------------------------- | ------------------------------------------------------------ |
+| ------------- | --------------------------------------------- | ------------------------------------------------------------  |
 | **Name**      | Smitkumar Jayendrakumar Velani                | Zhiteng Guo                                                   |
 | **Email**     | velanismitkumar@gmail.com                     | guo.zhit@northeastern.edu                                     |
 | **GitHub**    | [Smit-Velani](https://github.com/Smit-Velani) | [zhitengg7898-design](https://github.com/zhitengg7898-design) |
