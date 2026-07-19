@@ -2,7 +2,7 @@ import express from "express";
 import bcrypt from "bcryptjs";
 import passport from "../config/passport.js";
 import { getDB } from "../config/db.js";
-
+ 
 const router = express.Router();
 
 // POST /api/auth/register
