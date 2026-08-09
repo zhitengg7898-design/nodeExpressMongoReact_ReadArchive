@@ -1,12 +1,12 @@
 .col {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
 }
 
 .col-title {
   font-size: 1.8rem;
-  color: #111827;
+  color: #0f172a;
   margin: 0 0 1.5rem;
 }
 
@@ -19,9 +19,11 @@
 .col-form input {
   flex: 1;
   padding: 0.7rem 1rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid #c7d2fe;
   border-radius: 8px;
   font-size: 0.95rem;
+  background: white;
+  color: #0f172a;
 }
 
 .col-form input:focus {
@@ -38,21 +40,23 @@
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
 .col-form button:hover {
   background: #4338ca;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
 }
 
 .col-error {
-  color: #b91c1c;
+  color: #dc2626;
   margin-bottom: 1rem;
 }
 
 .col-status {
   text-align: center;
   padding: 3rem;
-  color: #6b7280;
+  color: #64748b;
 }
 
 .col-list {
@@ -63,9 +67,14 @@
 
 .col-card {
   background: #fff;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #c7d2fe;
   border-radius: 10px;
   padding: 1.25rem;
+  transition: all 0.2s;
+}
+
+.col-card:hover {
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.12);
 }
 
 .col-card-header {
@@ -76,7 +85,7 @@
 
 .col-card-header h3 {
   margin: 0;
-  color: #111827;
+  color: #0f172a;
 }
 
 .col-card-actions {
@@ -86,35 +95,244 @@
 
 .col-card-actions button {
   padding: 0.4rem 0.8rem;
-  background: #f3f4f6;
-  border: none;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
   border-radius: 6px;
   font-size: 0.85rem;
   cursor: pointer;
-  color: #374151;
+  color: #0f172a;
+  transition: all 0.2s;
 }
 
 .col-card-actions button:hover {
-  background: #e5e7eb;
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+.col-rename-btn {
+  background: #eef2ff;
+  color: #4338ca !important;
+  border: 1px solid #c7d2fe;
+}
+
+.col-rename-btn:hover {
+  background: #e0e7ff;
+  border-color: #a5b4fc;
+}
+
+.col-delete-btn {
+  background: #fee2e2;
+  color: #dc2626 !important;
+  border: 1px solid #fca5a5;
+}
+
+.col-delete-btn:hover {
+  background: #fecaca;
+  border-color: #f87171;
+}
+
+.col-rename-input {
+  display: flex;
+  gap: 0.5rem;
+  flex: 1;
+  align-items: center;
+}
+
+.col-rename-input input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #4f46e5;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background: white;
+  color: #0f172a;
+}
+
+.col-rename-input input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.col-confirm-btn,
+.col-cancel-btn {
+  padding: 0.4rem 0.6rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.col-confirm-btn {
+  background: #eef2ff;
+  color: #4338ca;
+  border: 1px solid #c7d2fe;
+}
+
+.col-confirm-btn:hover {
+  background: #e0e7ff;
+  border-color: #a5b4fc;
+}
+
+.col-cancel-btn {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+}
+
+.col-cancel-btn:hover {
+  background: #fecaca;
+  border-color: #f87171;
 }
 
 .col-delete {
-  color: #b91c1c !important;
+  color: #dc2626 !important;
 }
 
 .col-count {
-  color: #6b7280;
+  color: #64748b;
   font-size: 0.85rem;
-  margin: 0.5rem 0;
+  margin: 0.75rem 0;
+  font-weight: 500;
 }
 
 .col-books {
-  margin: 0;
-  padding-left: 1.25rem;
-  color: #374151;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+  padding: 0;
+}
+
+.col-book-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background: #f8fafc;
+  border-radius: 6px;
+  border: 1px solid #c7d2fe;
+  transition: all 0.2s;
+}
+
+.col-delete-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.col-delete-confirmation {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 320px;
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.col-delete-confirmation h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: #0f172a;
+}
+
+.col-delete-confirmation p {
+  margin: 0 0 1.5rem 0;
+  color: #64748b;
   font-size: 0.9rem;
 }
 
-.col-books li {
-  margin-bottom: 0.25rem;
+.col-delete-buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.col-delete-confirm-btn,
+.col-delete-cancel-btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.col-delete-confirm-btn {
+  background: #dc2626;
+  color: white;
+}
+
+.col-delete-confirm-btn:hover {
+  background: #b91c1c;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.col-delete-cancel-btn {
+  background: #f1f5f9;
+  color: #0f172a;
+  border: 1px solid #e2e8f0;
+}
+
+.col-delete-cancel-btn:hover {
+  background: #e2e8f0;
+}
+
+.col-book-item:hover {
+  background: #eef2ff;
+}
+
+.col-book-link {
+  flex: 1;
+  color: #4f46e5;
+  text-decoration: none;
+  font-size: 0.9rem;
+  word-break: break-word;
+}
+
+.col-book-link:hover {
+  text-decoration: underline;
+}
+
+.col-remove-book-btn {
+  padding: 0.25rem 0.5rem;
+  background: #fee2e2;
+  color: #b91c1c;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+}
+
+.col-remove-book-btn:hover {
+  background: #fecaca;
+}
+
+.col-empty {
+  color: #9ca3af;
+  font-size: 0.9rem;
+  margin: 1rem 0 0;
+  font-style: italic;
 }

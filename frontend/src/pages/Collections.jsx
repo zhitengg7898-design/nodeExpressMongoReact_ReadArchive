@@ -9,6 +9,9 @@ function Collections() {
   const [newName, setNewName] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [renamingId, setRenamingId] = useState(null);
+  const [renameValue, setRenameValue] = useState("");
+  const [deletingColId, setDeletingColId] = useState(null);
 
   const load = async () => {
     setLoading(true);
@@ -43,20 +46,42 @@ function Collections() {
     }
   };
 
-  const deleteCollection = async (colId) => {
+  const deleteCollection = (colId) => {
+    setDeletingColId(colId);
+  };
+
+  const confirmDelete = async () => {
+    if (!deletingColId) return;
     try {
-      await api.del(`/users/collections/${colId}`);
+      await api.del(`/users/collections/${deletingColId}`);
+      setDeletingColId(null);
+      load();
+    } catch (err) {
+      setError(err.message);
+      setDeletingColId(null);
+    }
+  };
+
+  const startRename = (colId, currentName) => {
+    setRenamingId(colId);
+    setRenameValue(currentName);
+  };
+
+  const confirmRename = async (colId) => {
+    if (!renameValue.trim()) return;
+    try {
+      await api.put(`/users/collections/${colId}`, { name: renameValue });
+      setRenamingId(null);
+      setRenameValue("");
       load();
     } catch (err) {
       setError(err.message);
     }
   };
 
-  const renameCollection = async (colId) => {
-    const name = prompt("New name for this collection:");
-    if (!name) return;
+  const removeBookFromCollection = async (colId, bookId) => {
     try {
-      await api.put(`/users/collections/${colId}`, { name });
+      await api.put(`/users/collections/${colId}`, { removeBook: bookId });
       load();
     } catch (err) {
       setError(err.message);
@@ -79,8 +104,9 @@ function Collections() {
           placeholder="New collection name..."
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
+          required
         />
-        <button type="submit">Create</button>
+        <button type="submit">Create Collection</button>
       </form>
 
       {error && <p className="col-error">{error}</p>}
@@ -92,31 +118,104 @@ function Collections() {
           {collections.map((col) => (
             <div key={col._id} className="col-card">
               <div className="col-card-header">
-                <h3>{col.name}</h3>
-                <div className="col-card-actions">
-                  <button
-                    type="button"
-                    onClick={() => renameCollection(col._id)}
-                  >
-                    Rename
-                  </button>
-                  <button
-                    type="button"
-                    className="col-delete"
-                    onClick={() => deleteCollection(col._id)}
-                  >
-                    Delete
-                  </button>
-                </div>
+                {renamingId === col._id ? (
+                  <div className="col-rename-input">
+                    <input
+                      type="text"
+                      value={renameValue}
+                      onChange={(e) => setRenameValue(e.target.value)}
+                      autoFocus
+                    />
+                    <button
+                      type="button"
+                      className="col-confirm-btn"
+                      onClick={() => confirmRename(col._id)}
+                    >
+                      Save
+                    </button>
+                    <button
+                      type="button"
+                      className="col-cancel-btn"
+                      onClick={() => setRenamingId(null)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <h3>{col.name}</h3>
+                    <div className="col-card-actions">
+                      <button
+                        type="button"
+                        className="col-rename-btn"
+                        onClick={() => startRename(col._id, col.name)}
+                      >
+                        Rename
+                      </button>
+                      <button
+                        type="button"
+                        className="col-delete-btn"
+                        onClick={() => deleteCollection(col._id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
-              <p className="col-count">{col.books.length} book(s)</p>
-              <ul className="col-books">
-                {col.books.map((book) => (
-                  <li key={book._id}>{book.title}</li>
-                ))}
-              </ul>
+              <p className="col-count">
+                {col.books.length} {col.books.length === 1 ? "book" : "books"}
+              </p>
+              {col.books.length > 0 ? (
+                <div className="col-books">
+                  {col.books.map((book) => (
+                    <div key={book._id} className="col-book-item">
+                      <a href={`/books/${book._id}`} className="col-book-link">
+                        {book.title}
+                      </a>
+                      <button
+                        type="button"
+                        className="col-remove-book-btn"
+                        onClick={() =>
+                          removeBookFromCollection(col._id, book._id)
+                        }
+                        title="Remove from collection"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="col-empty">No books in this collection yet</p>
+              )}
             </div>
           ))}
+        </div>
+      )}
+
+      {deletingColId && (
+        <div className="col-delete-overlay">
+          <div className="col-delete-confirmation">
+            <h3>Delete Collection?</h3>
+            <p>This action cannot be undone.</p>
+            <div className="col-delete-buttons">
+              <button
+                type="button"
+                className="col-delete-confirm-btn"
+                onClick={confirmDelete}
+              >
+                Delete
+              </button>
+              <button
+                type="button"
+                className="col-delete-cancel-btn"
+                onClick={() => setDeletingColId(null)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

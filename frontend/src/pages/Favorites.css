@@ -6,22 +6,104 @@
 
 .fav-title {
   font-size: 1.8rem;
-  color: #111827;
+  color: #0f172a;
   margin: 0 0 1.5rem;
 }
 
 .fav-status {
   text-align: center;
   padding: 3rem;
-  color: #6b7280;
+  color: #64748b;
 }
 
 .fav-error {
-  color: #b91c1c;
+  color: #dc2626;
 }
 
 .fav-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1.5rem;
+}
+
+.fav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.fav-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.5rem;
+  background-color: #f8fafc;
+  border: 1px solid #c7d2fe;
+  border-radius: 12px;
+  transition: box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.fav-item:hover {
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.12);
+  background-color: #eef2ff;
+}
+
+.fav-item-content {
+  flex: 1;
+  margin-right: 1.5rem;
+}
+
+.fav-item-content h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  color: #0f172a;
+}
+
+.fav-author {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin: 0.25rem 0;
+}
+
+.fav-isbn {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  margin: 0.25rem 0;
+}
+
+.fav-description {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin: 0.75rem 0 0;
+  line-height: 1.5;
+}
+
+.fav-item-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.fav-remove-btn {
+  padding: 0.25rem 0.5rem;
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.25rem;
+  line-height: 1;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.fav-remove-btn:hover {
+  background-color: #fecaca;
+  color: #b91c1c;
 }

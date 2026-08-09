@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { api } from "../api/client";
 import { useAuth } from "../context/AuthContext";
 import "./SubmitEntry.css";
@@ -7,8 +7,12 @@ import "./SubmitEntry.css";
 function SubmitEntry() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [showForm, setShowForm] = useState(false);
+  const [userPosts, setUserPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
+  const [isbn, setIsbn] = useState("");
   const [type, setType] = useState("book");
   const [description, setDescription] = useState("");
   const [coverImage, setCoverImage] = useState("");
@@ -16,8 +20,33 @@ function SubmitEntry() {
   const [linkUrl, setLinkUrl] = useState("");
   const [error, setError] = useState("");
 
+  const loadUserPosts = async () => {
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    try {
+      const response = await api.get("/books?limit=1000");
+      const myPosts = response.books.filter(
+        (book) => book.submittedBy?._id === user._id,
+      );
+      setUserPosts(myPosts);
+    } catch (err) {
+      console.error("Failed to load posts:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadUserPosts();
+  }, [user]);
+
   if (!user) {
-    return <p className="submit-status">Please log in to submit an entry.</p>;
+    return (
+      <p className="submit-status">Please log in to post a new book or PDF.</p>
+    );
   }
 
   const handleSubmit = async (e) => {
@@ -31,12 +60,34 @@ function SubmitEntry() {
       const book = await api.post("/books", {
         title,
         author,
+        isbn,
         type,
         description,
         coverImage,
         links,
       });
+      // Reset form
+      setTitle("");
+      setAuthor("");
+      setIsbn("");
+      setType("book");
+      setDescription("");
+      setCoverImage("");
+      setLinkLabel("");
+      setLinkUrl("");
+      setShowForm(false);
+      // Reload posts
+      loadUserPosts();
       navigate(`/books/${book._id}`);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const deletePost = async (postId) => {
+    try {
+      await api.del(`/books/${postId}`);
+      setUserPosts(userPosts.filter((post) => post._id !== postId));
     } catch (err) {
       setError(err.message);
     }
@@ -44,72 +95,148 @@ function SubmitEntry() {
 
   return (
     <div className="submit">
-      <h1 className="submit-title">Submit a New Entry</h1>
-      <form className="submit-form" onSubmit={handleSubmit}>
-        {error && <div className="submit-error">{error}</div>}
+      <h1 className="submit-title">My Posts</h1>
+      <button
+        type="button"
+        className="submit-toggle-btn"
+        onClick={() => setShowForm(!showForm)}
+      >
+        {showForm ? "View Posts" : "Create Post"}
+      </button>
 
-        <label htmlFor="title">Title *</label>
-        <input
-          id="title"
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
+      {showForm ? (
+        <form className="submit-form" onSubmit={handleSubmit}>
+          {error && <div className="submit-error">{error}</div>}
 
-        <label htmlFor="author">Author</label>
-        <input
-          id="author"
-          type="text"
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-        />
+          <label htmlFor="title">Title *</label>
+          <input
+            id="title"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
 
-        <label htmlFor="type">Type *</label>
-        <select
-          id="type"
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-        >
-          <option value="book">Book</option>
-          <option value="article">Article</option>
-        </select>
+          <label htmlFor="author">Author</label>
+          <input
+            id="author"
+            type="text"
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
+          />
 
-        <label htmlFor="description">Description</label>
-        <textarea
-          id="description"
-          rows="4"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
+          <label htmlFor="isbn">ISBN (optional)</label>
+          <input
+            id="isbn"
+            type="text"
+            placeholder="e.g. 978-0-123456-78-9"
+            value={isbn}
+            onChange={(e) => setIsbn(e.target.value)}
+          />
 
-        <label htmlFor="coverImage">Cover Image URL (optional)</label>
-        <input
-          id="coverImage"
-          type="url"
-          value={coverImage}
-          onChange={(e) => setCoverImage(e.target.value)}
-        />
+          <label htmlFor="type">Type *</label>
+          <select
+            id="type"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+          >
+            <option value="book">Book</option>
+            <option value="article">Article</option>
+          </select>
 
-        <label htmlFor="linkLabel">Resource Link Label (optional)</label>
-        <input
-          id="linkLabel"
-          type="text"
-          placeholder="e.g. Free PDF, Buy on Amazon"
-          value={linkLabel}
-          onChange={(e) => setLinkLabel(e.target.value)}
-        />
+          <label htmlFor="description">Description</label>
+          <textarea
+            id="description"
+            rows="4"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
 
-        <label htmlFor="linkUrl">Resource Link URL (optional)</label>
-        <input
-          id="linkUrl"
-          type="url"
-          value={linkUrl}
-          onChange={(e) => setLinkUrl(e.target.value)}
-        />
+          <label htmlFor="coverImage">Cover Image URL (optional)</label>
+          <input
+            id="coverImage"
+            type="url"
+            value={coverImage}
+            onChange={(e) => setCoverImage(e.target.value)}
+          />
 
-        <button type="submit">Submit Entry</button>
-      </form>
+          <label htmlFor="linkLabel">Resource Link Label (optional)</label>
+          <input
+            id="linkLabel"
+            type="text"
+            placeholder="e.g. Free PDF, Buy on Amazon"
+            value={linkLabel}
+            onChange={(e) => setLinkLabel(e.target.value)}
+          />
+
+          <label htmlFor="linkUrl">Resource Link URL (optional)</label>
+          <input
+            id="linkUrl"
+            type="url"
+            value={linkUrl}
+            onChange={(e) => setLinkUrl(e.target.value)}
+          />
+
+          <button type="submit">Post Book/PDF</button>
+        </form>
+      ) : (
+        <div className="submit-posts-section">
+          {loading ? (
+            <p className="submit-status">Loading your posts...</p>
+          ) : userPosts.length === 0 ? (
+            <p className="submit-status">
+              You haven't posted any books yet.{" "}
+              <button
+                type="button"
+                className="submit-create-link"
+                onClick={() => setShowForm(true)}
+              >
+                Create your first post
+              </button>
+            </p>
+          ) : (
+            <div className="submit-posts-list">
+              {userPosts.map((post) => (
+                <div
+                  key={post._id}
+                  className="submit-post-item"
+                  onClick={() => navigate(`/books/${post._id}`)}
+                >
+                  <div className="submit-post-info">
+                    <h3>{post.title}</h3>
+                    {post.author && (
+                      <p className="submit-post-author">by {post.author}</p>
+                    )}
+                    {post.isbn && (
+                      <p className="submit-post-isbn">ISBN: {post.isbn}</p>
+                    )}
+                    <span
+                      className={`submit-post-type submit-type-${post.type}`}
+                    >
+                      {post.type}
+                    </span>
+                    <p className="submit-post-description">
+                      {post.description}
+                    </p>
+                  </div>
+                  <div className="submit-post-actions">
+                    <button
+                      type="button"
+                      className="submit-post-delete-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deletePost(post._id);
+                      }}
+                    >
+                      ×
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
