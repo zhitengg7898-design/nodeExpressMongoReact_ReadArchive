@@ -159,104 +159,104 @@ function BookDetail() {
           {book.isbn && <p className="detail-isbn">ISBN: {book.isbn}</p>}
           <p className="detail-description">{book.description}</p>
 
+          {/* Resource links - available to all users */}
+          {(book.links && book.links.length > 0) ||
+          (book.supplementLinks && book.supplementLinks.length > 0) ? (
+            <div className="detail-resources">
+              <h3 className="detail-full-text-header">Full Text</h3>
+              <div className="detail-resources-list">
+                {book.links &&
+                  book.links.map((link) => (
+                    <a
+                      key={link.url}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="detail-resource-item"
+                    >
+                      <svg
+                        className="detail-resource-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="12" y1="13" x2="12" y2="17"></line>
+                        <line x1="10" y1="15" x2="14" y2="15"></line>
+                      </svg>
+                      <span className="detail-resource-label">
+                        {link.label}
+                      </span>
+                      <svg
+                        className="detail-resource-action-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                      </svg>
+                    </a>
+                  ))}
+
+                {book.supplementLinks &&
+                  book.supplementLinks.map((link) => (
+                    <div
+                      key={link._id}
+                      className="detail-resource-item detail-supplement-resource"
+                    >
+                      <svg
+                        className="detail-resource-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                      </svg>
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="detail-resource-label"
+                      >
+                        {link.label}
+                      </a>
+                      {user && link.contributedBy?.toString() === user._id && (
+                        <button
+                          type="button"
+                          className="supplement-delete-btn"
+                          onClick={() => setDeletingLinkId(link._id)}
+                          title="Delete this resource"
+                        >
+                          ✕
+                        </button>
+                      )}
+                      <svg
+                        className="detail-resource-action-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                      </svg>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          ) : null}
+
+          {/* Actions - only for logged-in users */}
           {user ? (
             <div className="detail-full-text-section">
-              <h3 className="detail-full-text-header">Full Text</h3>
-
-              {(book.links && book.links.length > 0) ||
-              (book.supplementLinks && book.supplementLinks.length > 0) ? (
-                <div className="detail-resources">
-                  <div className="detail-resources-list">
-                    {book.links &&
-                      book.links.map((link) => (
-                        <a
-                          key={link.url}
-                          href={link.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="detail-resource-item"
-                        >
-                          <svg
-                            className="detail-resource-icon"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          >
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                            <line x1="12" y1="13" x2="12" y2="17"></line>
-                            <line x1="10" y1="15" x2="14" y2="15"></line>
-                          </svg>
-                          <span className="detail-resource-label">
-                            {link.label}
-                          </span>
-                          <svg
-                            className="detail-resource-action-icon"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          >
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                            <polyline points="15 3 21 3 21 9"></polyline>
-                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                          </svg>
-                        </a>
-                      ))}
-
-                    {book.supplementLinks &&
-                      book.supplementLinks.map((link) => (
-                        <div
-                          key={link._id}
-                          className="detail-resource-item detail-supplement-resource"
-                        >
-                          <svg
-                            className="detail-resource-icon"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          >
-                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                          </svg>
-                          <a
-                            href={link.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="detail-resource-label"
-                          >
-                            {link.label}
-                          </a>
-                          {user &&
-                            link.contributedBy?.toString() === user._id && (
-                              <button
-                                type="button"
-                                className="supplement-delete-btn"
-                                onClick={() => setDeletingLinkId(link._id)}
-                                title="Delete this resource"
-                              >
-                                ✕
-                              </button>
-                            )}
-                          <svg
-                            className="detail-resource-action-icon"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          >
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                            <polyline points="15 3 21 3 21 9"></polyline>
-                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                          </svg>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              ) : null}
-
               <h3 className="detail-actions-header">Actions</h3>
 
               <div className="detail-actions">
