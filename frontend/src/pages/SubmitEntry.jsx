@@ -19,6 +19,9 @@ function SubmitEntry() {
   const [linkLabel, setLinkLabel] = useState("");
   const [linkUrl, setLinkUrl] = useState("");
   const [error, setError] = useState("");
+  const [duplicateBookId, setDuplicateBookId] = useState(null);
+  const [duplicateMessage, setDuplicateMessage] = useState("");
+  const [deletingPostId, setDeletingPostId] = useState(null);
 
   const loadUserPosts = async () => {
     if (!user) {
@@ -52,6 +55,8 @@ function SubmitEntry() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setDuplicateBookId(null);
+    setDuplicateMessage("");
     try {
       const links = [];
       if (linkLabel && linkUrl) {
@@ -80,16 +85,30 @@ function SubmitEntry() {
       loadUserPosts();
       navigate(`/books/${book._id}`);
     } catch (err) {
-      setError(err.message);
+      // Check if this is a duplicate book error (409)
+      if (err.status === 409 && err.data?.existingId) {
+        setDuplicateBookId(err.data.existingId);
+        setDuplicateMessage(err.message);
+        setError("");
+      } else {
+        setError(err.message);
+      }
     }
   };
 
-  const deletePost = async (postId) => {
+  const confirmDeletePost = (postId) => {
+    setDeletingPostId(postId);
+  };
+
+  const deletePost = async () => {
+    if (!deletingPostId) return;
     try {
-      await api.del(`/books/${postId}`);
-      setUserPosts(userPosts.filter((post) => post._id !== postId));
+      await api.del(`/books/${deletingPostId}`);
+      setUserPosts(userPosts.filter((post) => post._id !== deletingPostId));
+      setDeletingPostId(null);
     } catch (err) {
       setError(err.message);
+      setDeletingPostId(null);
     }
   };
 
@@ -107,77 +126,107 @@ function SubmitEntry() {
       {showForm ? (
         <form className="submit-form" onSubmit={handleSubmit}>
           {error && <div className="submit-error">{error}</div>}
+          {duplicateBookId && (
+            <div className="submit-duplicate-warning">
+              <p>{duplicateMessage}</p>
+              <div className="submit-duplicate-actions">
+                <Link
+                  to={`/books/${duplicateBookId}`}
+                  className="submit-duplicate-link"
+                >
+                  View Existing Book
+                </Link>
+                <button
+                  type="button"
+                  className="submit-duplicate-cancel"
+                  onClick={() => {
+                    setDuplicateBookId(null);
+                    setDuplicateMessage("");
+                    setTitle("");
+                    setAuthor("");
+                    setIsbn("");
+                  }}
+                >
+                  Post Different Book
+                </button>
+              </div>
+            </div>
+          )}
 
-          <label htmlFor="title">Title *</label>
-          <input
-            id="title"
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
+          {!duplicateBookId && (
+            <>
+              <label htmlFor="title">Title *</label>
+              <input
+                id="title"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+              />
 
-          <label htmlFor="author">Author</label>
-          <input
-            id="author"
-            type="text"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
+              <label htmlFor="author">Author</label>
+              <input
+                id="author"
+                type="text"
+                value={author}
+                onChange={(e) => setAuthor(e.target.value)}
+              />
 
-          <label htmlFor="isbn">ISBN (optional)</label>
-          <input
-            id="isbn"
-            type="text"
-            placeholder="e.g. 978-0-123456-78-9"
-            value={isbn}
-            onChange={(e) => setIsbn(e.target.value)}
-          />
+              <label htmlFor="isbn">ISBN (optional)</label>
+              <input
+                id="isbn"
+                type="text"
+                placeholder="e.g. 978-0-123456-78-9"
+                value={isbn}
+                onChange={(e) => setIsbn(e.target.value)}
+              />
 
-          <label htmlFor="type">Type *</label>
-          <select
-            id="type"
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-          >
-            <option value="book">Book</option>
-            <option value="article">Article</option>
-          </select>
+              <label htmlFor="type">Type *</label>
+              <select
+                id="type"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+              >
+                <option value="book">Book</option>
+                <option value="article">Article</option>
+              </select>
 
-          <label htmlFor="description">Description</label>
-          <textarea
-            id="description"
-            rows="4"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
+              <label htmlFor="description">Description</label>
+              <textarea
+                id="description"
+                rows="4"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
 
-          <label htmlFor="coverImage">Cover Image URL (optional)</label>
-          <input
-            id="coverImage"
-            type="url"
-            value={coverImage}
-            onChange={(e) => setCoverImage(e.target.value)}
-          />
+              <label htmlFor="coverImage">Cover Image URL (optional)</label>
+              <input
+                id="coverImage"
+                type="url"
+                value={coverImage}
+                onChange={(e) => setCoverImage(e.target.value)}
+              />
 
-          <label htmlFor="linkLabel">Resource Link Label (optional)</label>
-          <input
-            id="linkLabel"
-            type="text"
-            placeholder="e.g. Free PDF, Buy on Amazon"
-            value={linkLabel}
-            onChange={(e) => setLinkLabel(e.target.value)}
-          />
+              <label htmlFor="linkLabel">Resource Link Label (optional)</label>
+              <input
+                id="linkLabel"
+                type="text"
+                placeholder="e.g. Free PDF, Buy on Amazon"
+                value={linkLabel}
+                onChange={(e) => setLinkLabel(e.target.value)}
+              />
 
-          <label htmlFor="linkUrl">Resource Link URL (optional)</label>
-          <input
-            id="linkUrl"
-            type="url"
-            value={linkUrl}
-            onChange={(e) => setLinkUrl(e.target.value)}
-          />
+              <label htmlFor="linkUrl">Resource Link URL (optional)</label>
+              <input
+                id="linkUrl"
+                type="url"
+                value={linkUrl}
+                onChange={(e) => setLinkUrl(e.target.value)}
+              />
 
-          <button type="submit">Post Book/PDF</button>
+              <button type="submit">Post Book/PDF</button>
+            </>
+          )}
         </form>
       ) : (
         <div className="submit-posts-section">
@@ -225,16 +274,39 @@ function SubmitEntry() {
                       className="submit-post-delete-btn"
                       onClick={(e) => {
                         e.stopPropagation();
-                        deletePost(post._id);
+                        confirmDeletePost(post._id);
                       }}
                     >
-                      ×
+                      Delete
                     </button>
                   </div>
                 </div>
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {deletingPostId && (
+        <div className="submit-delete-overlay">
+          <div className="submit-delete-confirmation">
+            <h3>Delete Post?</h3>
+            <p>This action cannot be undone.</p>
+            <div className="submit-delete-buttons">
+              <button
+                className="submit-delete-confirm-btn"
+                onClick={deletePost}
+              >
+                Delete
+              </button>
+              <button
+                className="submit-delete-cancel-btn"
+                onClick={() => setDeletingPostId(null)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

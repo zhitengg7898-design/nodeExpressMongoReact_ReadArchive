@@ -10,6 +10,7 @@ function Favorites() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [deletingId, setDeletingId] = useState(null);
 
   const loadFavorites = () => {
     setLoading(true);
@@ -28,12 +29,19 @@ function Favorites() {
     loadFavorites();
   }, [user]);
 
-  const unfavorite = async (bookId) => {
+  const confirmUnfavorite = (bookId) => {
+    setDeletingId(bookId);
+  };
+
+  const unfavorite = async () => {
+    if (!deletingId) return;
     try {
-      await api.del(`/users/favorites/${bookId}`);
-      setBooks(books.filter((b) => b._id !== bookId));
+      await api.del(`/users/favorites/${deletingId}`);
+      setBooks(books.filter((b) => b._id !== deletingId));
+      setDeletingId(null);
     } catch (err) {
       setError(err.message);
+      setDeletingId(null);
     }
   };
 
@@ -68,14 +76,34 @@ function Favorites() {
                   className="fav-remove-btn"
                   onClick={(e) => {
                     e.stopPropagation();
-                    unfavorite(book._id);
+                    confirmUnfavorite(book._id);
                   }}
                 >
-                  ×
+                  Delete
                 </button>
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {deletingId && (
+        <div className="fav-delete-overlay">
+          <div className="fav-delete-confirmation">
+            <h3>Remove from Favorites?</h3>
+            <p>This book will be removed from your favorites.</p>
+            <div className="fav-delete-buttons">
+              <button className="fav-delete-confirm-btn" onClick={unfavorite}>
+                Remove
+              </button>
+              <button
+                className="fav-delete-cancel-btn"
+                onClick={() => setDeletingId(null)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

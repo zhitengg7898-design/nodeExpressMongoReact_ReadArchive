@@ -11,6 +11,7 @@ const mockBooks = [
     title: "The Great Gatsby",
     author: "F. Scott Fitzgerald",
     type: "book",
+    isbn: "9780743273565",
     description:
       "A novel about the American dream set in the Jazz Age, following the mysterious millionaire Jay Gatsby and his obsession with Daisy Buchanan.",
     coverImage:
@@ -45,6 +46,7 @@ const mockBooks = [
     title: "Clean Code",
     author: "Robert C. Martin",
     type: "book",
+    isbn: "9780132350884",
     description:
       "A handbook of agile software craftsmanship. Covers writing readable, maintainable code with practical examples in Java.",
     coverImage: "https://m.media-amazon.com/images/I/41xShlnTZTL.jpg",
@@ -63,6 +65,7 @@ const mockBooks = [
     title: "Deep Learning",
     author: "Ian Goodfellow, Yoshua Bengio, Aaron Courville",
     type: "book",
+    isbn: "9780262035613",
     description:
       "The definitive textbook on deep learning, covering neural networks, optimization, convolutional nets, RNNs, and more.",
     coverImage: "https://m.media-amazon.com/images/I/61fim5QqaqL.jpg",
@@ -81,6 +84,7 @@ const mockBooks = [
     title: "1984",
     author: "George Orwell",
     type: "book",
+    isbn: "9780451524935",
     description:
       "A dystopian novel set in a totalitarian society ruled by Big Brother, exploring surveillance, propaganda, and the destruction of individual thought.",
     coverImage: "https://m.media-amazon.com/images/I/71rpa1-kyvL.jpg",
@@ -99,6 +103,7 @@ const mockBooks = [
     title: "You Don't Know JS: Scope & Closures",
     author: "Kyle Simpson",
     type: "book",
+    isbn: "9781491904190",
     description:
       "Part of the YDKJS series. A deep dive into how JavaScript handles scope, hoisting, closures, and the module pattern.",
     coverImage: "https://m.media-amazon.com/images/I/7186YfjgHHL.jpg",
@@ -132,6 +137,7 @@ const mockBooks = [
     title: "The Pragmatic Programmer",
     author: "David Thomas, Andrew Hunt",
     type: "book",
+    isbn: "9780135957059",
     description:
       "Timeless advice for software developers covering topics from personal responsibility and career development to coding techniques.",
     coverImage: "https://m.media-amazon.com/images/I/71f743sOq6L.jpg",
@@ -150,6 +156,7 @@ const mockBooks = [
     title: "To Kill a Mockingbird",
     author: "Harper Lee",
     type: "book",
+    isbn: "9780061935026",
     description:
       "Set in the American South during the 1930s, this Pulitzer Prize-winning novel explores racial injustice and moral growth through the eyes of young Scout Finch.",
     coverImage: "https://m.media-amazon.com/images/I/71FxgtFKcQL.jpg",
@@ -164,6 +171,7 @@ const mockBooks = [
     title: "Pride and Prejudice",
     author: "Jane Austen",
     type: "book",
+    isbn: "9780141439518",
     description:
       "A witty romantic novel following Elizabeth Bennet as she navigates issues of manners, upbringing, morality, and marriage in early 19th-century England.",
     coverImage: "https://m.media-amazon.com/images/I/71Q1tPupKjL.jpg",
@@ -182,6 +190,7 @@ const mockBooks = [
     title: "Brave New World",
     author: "Aldous Huxley",
     type: "book",
+    isbn: "9780060850524",
     description:
       "A dystopian novel set in a futuristic World State where citizens are engineered and conditioned for happiness, raising questions about freedom and humanity.",
     coverImage: "https://m.media-amazon.com/images/I/81zE42gT3xL.jpg",
@@ -196,6 +205,7 @@ const mockBooks = [
     title: "The Catcher in the Rye",
     author: "J. D. Salinger",
     type: "book",
+    isbn: "9780316769174",
     description:
       "Holden Caulfield recounts the days following his expulsion from prep school, capturing teenage alienation and the painful loss of innocence.",
     coverImage: "https://m.media-amazon.com/images/I/8125BDk3l9L.jpg",
@@ -210,6 +220,7 @@ const mockBooks = [
     title: "Crime and Punishment",
     author: "Fyodor Dostoevsky",
     type: "book",
+    isbn: "9780486415871",
     description:
       "A psychological novel following Raskolnikov, a student in St. Petersburg who murders a pawnbroker and struggles with guilt and redemption.",
     coverImage: "https://m.media-amazon.com/images/I/71FMnFEBnAL.jpg",
@@ -228,6 +239,7 @@ const mockBooks = [
     title: "Introduction to Algorithms",
     author: "Cormen, Leiserson, Rivest, Stein",
     type: "book",
+    isbn: "9780262046305",
     description:
       "Known as CLRS, this is the standard reference for algorithms and data structures used in university courses worldwide.",
     coverImage: "https://m.media-amazon.com/images/I/61Pgdn8Ys-L.jpg",
@@ -246,6 +258,7 @@ const mockBooks = [
     title: "Computer Networks",
     author: "Andrew S. Tanenbaum",
     type: "book",
+    isbn: "9780132126953",
     description:
       "A comprehensive textbook covering the full network stack from physical layer to application layer, with real-world protocol examples.",
     coverImage: "https://m.media-amazon.com/images/I/71lrPEWBqlL.jpg",
@@ -260,6 +273,7 @@ const mockBooks = [
     title: "Design Patterns: Elements of Reusable Object-Oriented Software",
     author: "Gang of Four",
     type: "book",
+    isbn: "9780201633610",
     description:
       "The classic catalog of 23 software design patterns by the Gang of Four. Essential reading for understanding reusable object-oriented design.",
     coverImage: "https://m.media-amazon.com/images/I/51szD9HC9pL.jpg",
@@ -274,6 +288,7 @@ const mockBooks = [
     title: "The Linux Command Line",
     author: "William Shotts",
     type: "book",
+    isbn: "9781593279523",
     description:
       "A complete introduction to using the Linux command line, covering everything from basic navigation to shell scripting.",
     coverImage: "https://m.media-amazon.com/images/I/71MYHXEIyFL.jpg",
@@ -292,6 +307,7 @@ const mockBooks = [
     title: "Operating System Concepts",
     author: "Abraham Silberschatz, Peter Galvin, Greg Gagne",
     type: "book",
+    isbn: "9781119800366",
     description:
       "Known as the 'Dinosaur Book', this is the standard OS textbook covering processes, threads, memory management, file systems, and more.",
     coverImage: "https://m.media-amazon.com/images/I/71bTqSGMssL.jpg",
@@ -343,6 +359,7 @@ const mockBooks = [
     title: "Atomic Habits",
     author: "James Clear",
     type: "book",
+    isbn: "9780735211292",
     description:
       "A practical guide to building good habits and breaking bad ones through small, incremental changes that compound over time.",
     coverImage: "https://m.media-amazon.com/images/I/81wgcld4wxL.jpg",
@@ -361,6 +378,7 @@ const mockBooks = [
     title: "Deep Work",
     author: "Cal Newport",
     type: "book",
+    isbn: "9781455586691",
     description:
       "Argues that the ability to focus without distraction on cognitively demanding tasks is becoming rare and valuable in the modern economy.",
     coverImage: "https://m.media-amazon.com/images/I/71QKQ9mwV7L.jpg",
@@ -375,6 +393,7 @@ const mockBooks = [
     title: "Thinking, Fast and Slow",
     author: "Daniel Kahneman",
     type: "book",
+    isbn: "9780374533557",
     description:
       "Nobel laureate Kahneman explores the two systems of thought â€” fast intuitive thinking and slow deliberate reasoning â€” and how they shape our decisions.",
     coverImage: "https://m.media-amazon.com/images/I/71wvKXWoMqL.jpg",

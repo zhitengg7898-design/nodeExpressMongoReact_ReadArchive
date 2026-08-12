@@ -12,6 +12,7 @@ function Collections() {
   const [renamingId, setRenamingId] = useState(null);
   const [renameValue, setRenameValue] = useState("");
   const [deletingColId, setDeletingColId] = useState(null);
+  const [deletingBookData, setDeletingBookData] = useState(null);
 
   const load = async () => {
     setLoading(true);
@@ -82,10 +83,16 @@ function Collections() {
   const removeBookFromCollection = async (colId, bookId) => {
     try {
       await api.put(`/users/collections/${colId}`, { removeBook: bookId });
+      setDeletingBookData(null);
       load();
     } catch (err) {
       setError(err.message);
+      setDeletingBookData(null);
     }
+  };
+
+  const confirmRemoveBook = (colId, bookId, bookTitle) => {
+    setDeletingBookData({ colId, bookId, bookTitle });
   };
 
   if (!user)
@@ -177,11 +184,11 @@ function Collections() {
                         type="button"
                         className="col-remove-book-btn"
                         onClick={() =>
-                          removeBookFromCollection(col._id, book._id)
+                          confirmRemoveBook(col._id, book._id, book.title)
                         }
                         title="Remove from collection"
                       >
-                        ×
+                        Delete
                       </button>
                     </div>
                   ))}
@@ -191,6 +198,39 @@ function Collections() {
               )}
             </div>
           ))}
+        </div>
+      )}
+
+      {deletingBookData && (
+        <div className="col-delete-overlay">
+          <div className="col-delete-confirmation">
+            <h3>Remove from Collection?</h3>
+            <p>
+              "{deletingBookData.bookTitle}" will be removed from this
+              collection.
+            </p>
+            <div className="col-delete-buttons">
+              <button
+                type="button"
+                className="col-delete-confirm-btn"
+                onClick={() =>
+                  removeBookFromCollection(
+                    deletingBookData.colId,
+                    deletingBookData.bookId,
+                  )
+                }
+              >
+                Remove
+              </button>
+              <button
+                type="button"
+                className="col-delete-cancel-btn"
+                onClick={() => setDeletingBookData(null)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       )}
 

@@ -56,6 +56,7 @@ function BookCard({ book }) {
         </span>
         <h3 className="book-card-title">{book.title}</h3>
         <p className="book-card-author">{book.author}</p>
+        {book.isbn && <p className="book-card-isbn">ISBN: {book.isbn}</p>}
       </div>
     </Link>
   );
@@ -67,6 +68,7 @@ BookCard.propTypes = {
     title: PropTypes.string.isRequired,
     author: PropTypes.string,
     type: PropTypes.string,
+    isbn: PropTypes.string,
     coverImage: PropTypes.string,
   }).isRequired,
 };

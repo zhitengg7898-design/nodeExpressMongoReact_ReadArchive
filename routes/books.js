@@ -9,7 +9,20 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   const { q, type, page = 1, limit = 20 } = req.query;
   const filter = {};
-  if (q) filter.$text = { $search: q };
+  if (q) {
+    // Support both text search and ISBN search
+    if (/^\d{10}(\d{3})?$/.test(q.replace(/-/g, ""))) {
+      // Looks like ISBN
+      filter.isbn = q.replace(/-/g, "");
+    } else {
+      // Text search - support case-insensitive search for title and author
+      filter.$or = [
+        { title: { $regex: q, $options: "i" } },
+        { author: { $regex: q, $options: "i" } },
+        { description: { $regex: q, $options: "i" } },
+      ];
+    }
+  }
   if (type) filter.type = type;
 
   const skip = (Number(page) - 1) * Number(limit);
@@ -84,13 +97,29 @@ router.post("/", auth, async (req, res) => {
 
   const db = getDB();
 
+  // Check if this book already exists (by title and author) - posted by current user
+  // Use case-insensitive comparison
+  const existingUserBook = await db.collection("books").findOne({
+    title: { $regex: `^${title}$`, $options: "i" },
+    author: author ? { $regex: `^${author}$`, $options: "i" } : "",
+    submittedBy: req.user._id,
+  });
+  if (existingUserBook) {
+    return res.status(409).json({
+      message:
+        "You have already posted this book. Would you like to add a link to the existing entry?",
+      existingId: existingUserBook._id,
+    });
+  }
+
   // Check ISBN uniqueness if provided
   if (isbn) {
     const existing = await db.collection("books").findOne({ isbn });
     if (existing) {
-      return res
-        .status(409)
-        .json({ message: "A book with this ISBN already exists" });
+      return res.status(409).json({
+        message: "A book with this ISBN already exists",
+        existingId: existing._id,
+      });
     }
   }
 
@@ -186,15 +215,13 @@ router.post("/:id/supplement-links", auth, async (req, res) => {
     createdAt: new Date(),
   };
 
-  await db
-    .collection("books")
-    .updateOne(
-      { _id: bookId },
-      {
-        $push: { supplementLinks: supplementLink },
-        $set: { updatedAt: new Date() },
-      },
-    );
+  await db.collection("books").updateOne(
+    { _id: bookId },
+    {
+      $push: { supplementLinks: supplementLink },
+      $set: { updatedAt: new Date() },
+    },
+  );
 
   const updated = await db.collection("books").findOne({ _id: bookId });
   res.status(201).json(updated);
@@ -231,15 +258,13 @@ router.delete("/:id/supplement-links/:linkId", auth, async (req, res) => {
       .json({ message: "Not authorized to delete this link" });
   }
 
-  await db
-    .collection("books")
-    .updateOne(
-      { _id: bookId },
-      {
-        $pull: { supplementLinks: { _id: linkId } },
-        $set: { updatedAt: new Date() },
-      },
-    );
+  await db.collection("books").updateOne(
+    { _id: bookId },
+    {
+      $pull: { supplementLinks: { _id: linkId } },
+      $set: { updatedAt: new Date() },
+    },
+  );
 
   const updated = await db.collection("books").findOne({ _id: bookId });
   res.json(updated);

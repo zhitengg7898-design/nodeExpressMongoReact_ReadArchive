@@ -234,28 +234,142 @@
 .submit-post-delete-btn {
   padding: 0.25rem 0.5rem;
   background: #fee2e2;
-  color: #dc2626;
+  color: #b91c1c;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 1.25rem;
-  line-height: 1;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  line-height: 1.5;
   transition: all 0.2s;
 }
 
 .submit-post-delete-btn:hover {
   background-color: #fecaca;
-  color: #b91c1c;
+  color: #7f1d1d;
 }
 
-.submit-post-delete-btn svg {
-  width: 16px;
-  height: 16px;
-  stroke-width: 2;
+.submit-duplicate-warning {
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  color: #92400e;
+}
+
+.submit-duplicate-warning p {
+  margin: 0 0 1rem 0;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.submit-duplicate-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.submit-duplicate-link {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  background: #f59e0b;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.submit-duplicate-link:hover {
+  background: #d97706;
+}
+
+.submit-duplicate-cancel {
+  padding: 0.6rem 1.2rem;
+  background: transparent;
+  color: #92400e;
+  border: 1px solid #fcd34d;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.submit-duplicate-cancel:hover {
+  background: #fef08a;
+  border-color: #f59e0b;
+}
+
+.submit-delete-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.submit-delete-confirmation {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 320px;
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+.submit-delete-confirmation h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: #0f172a;
+}
+
+.submit-delete-confirmation p {
+  margin: 0 0 1.5rem 0;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.submit-delete-buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.submit-delete-confirm-btn,
+.submit-delete-cancel-btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.submit-delete-confirm-btn {
+  background: #dc2626;
+  color: white;
+}
+
+.submit-delete-confirm-btn:hover {
+  background: #b91c1c;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.submit-delete-cancel-btn {
+  background: #f1f5f9;
+  color: #0f172a;
+  border: 1px solid #e2e8f0;
+}
+
+.submit-delete-cancel-btn:hover {
+  background: #e2e8f0;
 }
