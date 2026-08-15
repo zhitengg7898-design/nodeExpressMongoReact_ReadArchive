@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node backend.js",
     "dev": "nodemon backend.js",
-    "seed": "node config/seed.js"
+    "seed": "node config/seed.js",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
