@@ -54,7 +54,7 @@ function BookCard({ book }) {
         <span className={`book-card-type book-card-type-${book.type}`}>
           {book.type}
         </span>
-        <h3 className="book-card-title">{book.title}</h3>
+        <h2 className="book-card-title">{book.title}</h2>
         <p className="book-card-author">{book.author}</p>
         {book.isbn && <p className="book-card-isbn">ISBN: {book.isbn}</p>}
       </div>

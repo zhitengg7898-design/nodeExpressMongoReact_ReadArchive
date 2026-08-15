@@ -1,4 +1,5 @@
 ﻿import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { api } from "../api/client";
 import { useAuth } from "../context/AuthContext";
@@ -344,7 +345,7 @@ function BookDetail() {
                                     `/users/collections/${col._id}`,
                                     {
                                       addBook: id,
-                                    },
+                                    }
                                   );
                                   setFavMsg(`Added to "${col.name}"!`);
                                   setShowCollectionMenu(false);
@@ -448,5 +449,7 @@ function BookDetail() {
     </div>
   );
 }
+
+BookDetail.propTypes = {};
 
 export default BookDetail;

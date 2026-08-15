@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { api } from "../api/client";
 import { useAuth } from "../context/AuthContext";
 import "./Collections.css";
@@ -34,6 +35,33 @@ function Collections() {
     }
     load();
   }, [user]);
+
+  // Keyboard support for deletion dialogs
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        if (deletingBookData) {
+          setDeletingBookData(null);
+        } else if (deletingColId) {
+          setDeletingColId(null);
+        }
+      } else if (e.key === "Enter") {
+        if (deletingBookData) {
+          removeBookFromCollection(
+            deletingBookData.colId,
+            deletingBookData.bookId
+          );
+        } else if (deletingColId) {
+          deleteCollection(deletingColId);
+        }
+      }
+    };
+
+    if (deletingBookData || deletingColId) {
+      window.addEventListener("keydown", handleKeyDown);
+      return () => window.removeEventListener("keydown", handleKeyDown);
+    }
+  }, [deletingBookData, deletingColId]);
 
   const createCollection = async (e) => {
     e.preventDefault();
@@ -150,7 +178,7 @@ function Collections() {
                   </div>
                 ) : (
                   <>
-                    <h3>{col.name}</h3>
+                    <h2>{col.name}</h2>
                     <div className="col-card-actions">
                       <button
                         type="button"
@@ -202,7 +230,11 @@ function Collections() {
       )}
 
       {deletingBookData && (
-        <div className="col-delete-overlay">
+        <div
+          className="col-delete-overlay"
+          role="alertdialog"
+          aria-label="Confirm removal from collection"
+        >
           <div className="col-delete-confirmation">
             <h3>Remove from Collection?</h3>
             <p>
@@ -216,9 +248,11 @@ function Collections() {
                 onClick={() =>
                   removeBookFromCollection(
                     deletingBookData.colId,
-                    deletingBookData.bookId,
+                    deletingBookData.bookId
                   )
                 }
+                autoFocus
+                aria-label="Confirm removal"
               >
                 Remove
               </button>
@@ -226,6 +260,7 @@ function Collections() {
                 type="button"
                 className="col-delete-cancel-btn"
                 onClick={() => setDeletingBookData(null)}
+                aria-label="Cancel removal"
               >
                 Cancel
               </button>
@@ -235,7 +270,11 @@ function Collections() {
       )}
 
       {deletingColId && (
-        <div className="col-delete-overlay">
+        <div
+          className="col-delete-overlay"
+          role="alertdialog"
+          aria-label="Confirm collection deletion"
+        >
           <div className="col-delete-confirmation">
             <h3>Delete Collection?</h3>
             <p>This action cannot be undone.</p>
@@ -244,6 +283,8 @@ function Collections() {
                 type="button"
                 className="col-delete-confirm-btn"
                 onClick={confirmDelete}
+                autoFocus
+                aria-label="Confirm deletion"
               >
                 Delete
               </button>
@@ -251,6 +292,7 @@ function Collections() {
                 type="button"
                 className="col-delete-cancel-btn"
                 onClick={() => setDeletingColId(null)}
+                aria-label="Cancel deletion"
               >
                 Cancel
               </button>
@@ -261,5 +303,7 @@ function Collections() {
     </div>
   );
 }
+
+Collections.propTypes = {};
 
 export default Collections;

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { useNavigate, Link } from "react-router-dom";
 import { api } from "../api/client";
 import { useAuth } from "../context/AuthContext";
@@ -32,7 +33,7 @@ function SubmitEntry() {
     try {
       const response = await api.get("/books?limit=1000");
       const myPosts = response.books.filter(
-        (book) => book.submittedBy?._id === user._id,
+        (book) => book.submittedBy?._id === user._id
       );
       setUserPosts(myPosts);
     } catch (err) {
@@ -46,6 +47,21 @@ function SubmitEntry() {
     loadUserPosts();
   }, [user]);
 
+  // Keyboard support for deletion dialog
+  useEffect(() => {
+    if (!deletingPostId) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setDeletingPostId(null);
+      } else if (e.key === "Enter") {
+        deletePost();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [deletingPostId]);
   if (!user) {
     return (
       <p className="submit-status">Please log in to post a new book or PDF.</p>
@@ -252,7 +268,7 @@ function SubmitEntry() {
                   onClick={() => navigate(`/books/${post._id}`)}
                 >
                   <div className="submit-post-info">
-                    <h3>{post.title}</h3>
+                    <h2>{post.title}</h2>
                     {post.author && (
                       <p className="submit-post-author">by {post.author}</p>
                     )}
@@ -288,7 +304,11 @@ function SubmitEntry() {
       )}
 
       {deletingPostId && (
-        <div className="submit-delete-overlay">
+        <div
+          className="submit-delete-overlay"
+          role="alertdialog"
+          aria-label="Confirm post deletion"
+        >
           <div className="submit-delete-confirmation">
             <h3>Delete Post?</h3>
             <p>This action cannot be undone.</p>
@@ -296,12 +316,15 @@ function SubmitEntry() {
               <button
                 className="submit-delete-confirm-btn"
                 onClick={deletePost}
+                autoFocus
+                aria-label="Confirm deletion"
               >
                 Delete
               </button>
               <button
                 className="submit-delete-cancel-btn"
                 onClick={() => setDeletingPostId(null)}
+                aria-label="Cancel deletion"
               >
                 Cancel
               </button>
@@ -312,5 +335,7 @@ function SubmitEntry() {
     </div>
   );
 }
+
+SubmitEntry.propTypes = {};
 
 export default SubmitEntry;

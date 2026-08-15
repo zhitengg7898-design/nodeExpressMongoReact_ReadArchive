@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api/client";
 import { useAuth } from "../context/AuthContext";
@@ -28,6 +29,22 @@ function Favorites() {
     }
     loadFavorites();
   }, [user]);
+
+  // Keyboard support for deletion dialog
+  useEffect(() => {
+    if (!deletingId) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setDeletingId(null);
+      } else if (e.key === "Enter") {
+        unfavorite();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [deletingId]);
 
   const confirmUnfavorite = (bookId) => {
     setDeletingId(bookId);
@@ -66,7 +83,7 @@ function Favorites() {
               onClick={() => navigate(`/books/${book._id}`)}
             >
               <div className="fav-item-content">
-                <h3>{book.title}</h3>
+                <h2>{book.title}</h2>
                 {book.author && <p className="fav-author">by {book.author}</p>}
                 {book.isbn && <p className="fav-isbn">ISBN: {book.isbn}</p>}
                 <p className="fav-description">{book.description}</p>
@@ -88,17 +105,27 @@ function Favorites() {
       )}
 
       {deletingId && (
-        <div className="fav-delete-overlay">
+        <div
+          className="fav-delete-overlay"
+          role="alertdialog"
+          aria-label="Confirm removal from favorites"
+        >
           <div className="fav-delete-confirmation">
             <h3>Remove from Favorites?</h3>
             <p>This book will be removed from your favorites.</p>
             <div className="fav-delete-buttons">
-              <button className="fav-delete-confirm-btn" onClick={unfavorite}>
+              <button
+                className="fav-delete-confirm-btn"
+                onClick={unfavorite}
+                autoFocus
+                aria-label="Confirm removal"
+              >
                 Remove
               </button>
               <button
                 className="fav-delete-cancel-btn"
                 onClick={() => setDeletingId(null)}
+                aria-label="Cancel removal"
               >
                 Cancel
               </button>
@@ -109,5 +136,7 @@ function Favorites() {
     </div>
   );
 }
+
+Favorites.propTypes = {};
 
 export default Favorites;
