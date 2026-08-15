@@ -13,15 +13,17 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/books/:id" element={<BookDetail />} />
-        <Route path="/favorites" element={<Favorites />} />
-        <Route path="/collections" element={<Collections />} />
-        <Route path="/submit" element={<SubmitEntry />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/books/:id" element={<BookDetail />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/collections" element={<Collections />} />
+          <Route path="/submit" element={<SubmitEntry />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </main>
     </Router>
   );
 }
