@@ -150,10 +150,12 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 1.5rem;\n  background: #eef2ff;
+  padding: 1.5rem;
+  background: #eef2ff;
   border: 1px solid #c7d2fe;
   border-radius: 12px;
-  transition:\n    box-shadow 0.2s,
+  transition:
+    box-shadow 0.2s,
     border-color 0.2s;
   cursor: pointer;
 }

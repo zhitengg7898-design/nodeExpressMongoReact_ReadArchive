@@ -19,8 +19,8 @@ passport.use(
       } catch (err) {
         return done(err);
       }
-    },
-  ),
+    }
+  )
 );
 
 passport.serializeUser((user, done) => done(null, user._id.toString()));

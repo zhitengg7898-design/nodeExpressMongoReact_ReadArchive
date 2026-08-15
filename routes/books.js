@@ -49,7 +49,7 @@ router.get("/", async (req, res) => {
           .toArray()
       : [];
   const submitterMap = Object.fromEntries(
-    submitters.map((u) => [u._id.toString(), u]),
+    submitters.map((u) => [u._id.toString(), u])
   );
 
   const populated = books.map((b) => ({
@@ -220,7 +220,7 @@ router.post("/:id/supplement-links", auth, async (req, res) => {
     {
       $push: { supplementLinks: supplementLink },
       $set: { updatedAt: new Date() },
-    },
+    }
   );
 
   const updated = await db.collection("books").findOne({ _id: bookId });
@@ -248,7 +248,7 @@ router.delete("/:id/supplement-links/:linkId", auth, async (req, res) => {
   if (!book) return res.status(404).json({ message: "Book not found" });
 
   const link = book.supplementLinks?.find(
-    (l) => l._id.toString() === linkId.toString(),
+    (l) => l._id.toString() === linkId.toString()
   );
   if (!link) return res.status(404).json({ message: "Link not found" });
 
@@ -263,7 +263,7 @@ router.delete("/:id/supplement-links/:linkId", auth, async (req, res) => {
     {
       $pull: { supplementLinks: { _id: linkId } },
       $set: { updatedAt: new Date() },
-    },
+    }
   );
 
   const updated = await db.collection("books").findOne({ _id: bookId });

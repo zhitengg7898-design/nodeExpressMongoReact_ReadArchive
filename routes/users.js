@@ -72,7 +72,7 @@ router.get("/collections", async (req, res) => {
               .toArray()
           : [];
       return { ...col, books };
-    }),
+    })
   );
   res.json(populated);
 });
@@ -86,7 +86,7 @@ router.post("/collections", async (req, res) => {
     .collection("users")
     .updateOne(
       { _id: req.user._id },
-      { $push: { collections: { _id: colId, name, books: [] } } },
+      { $push: { collections: { _id: colId, name, books: [] } } }
     );
   res.status(201).json({ _id: colId, name, books: [] });
 });
@@ -102,7 +102,7 @@ router.put("/collections/:colId", async (req, res) => {
   const db = getDB();
   const user = await db.collection("users").findOne({ _id: req.user._id });
   const col = user?.collections?.find(
-    (c) => c._id.toString() === colId.toString(),
+    (c) => c._id.toString() === colId.toString()
   );
   if (!col) return res.status(404).json({ message: "Collection not found" });
 
@@ -111,7 +111,7 @@ router.put("/collections/:colId", async (req, res) => {
       .collection("users")
       .updateOne(
         { _id: req.user._id, "collections._id": colId },
-        { $set: { "collections.$.name": req.body.name } },
+        { $set: { "collections.$.name": req.body.name } }
       );
   }
   if (req.body.addBook) {
@@ -121,7 +121,7 @@ router.put("/collections/:colId", async (req, res) => {
         .collection("users")
         .updateOne(
           { _id: req.user._id, "collections._id": colId },
-          { $push: { "collections.$.books": bookObjId } },
+          { $push: { "collections.$.books": bookObjId } }
         );
     }
   }
@@ -131,13 +131,13 @@ router.put("/collections/:colId", async (req, res) => {
       .collection("users")
       .updateOne(
         { _id: req.user._id, "collections._id": colId },
-        { $pull: { "collections.$.books": bookObjId } },
+        { $pull: { "collections.$.books": bookObjId } }
       );
   }
 
   const updated = await db.collection("users").findOne({ _id: req.user._id });
   const updatedCol = updated.collections.find(
-    (c) => c._id.toString() === colId.toString(),
+    (c) => c._id.toString() === colId.toString()
   );
   res.json(updatedCol);
 });
@@ -154,7 +154,7 @@ router.delete("/collections/:colId", async (req, res) => {
     .collection("users")
     .updateOne(
       { _id: req.user._id },
-      { $pull: { collections: { _id: colId } } },
+      { $pull: { collections: { _id: colId } } }
     );
   res.json({ message: "Collection deleted" });
 });

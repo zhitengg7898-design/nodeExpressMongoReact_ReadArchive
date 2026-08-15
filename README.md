@@ -6,13 +6,12 @@
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/zhitengg7898-design/nodeExpressMongoReact_ReadArchive)
 [![Demo Vedio](https://img.shields.io/badge/Demo%20Video-Visit%20Site-2563EB?style=for-the-badge)](https://youtu.be/IrVrHrNl4Fs)
 
-
 ---
 
 ## 👤 Authors
 
 | Field         | Student 1                                     | Student 2                                                     |
-| ------------- | --------------------------------------------- | ------------------------------------------------------------  |
+| ------------- | --------------------------------------------- | ------------------------------------------------------------- |
 | **Name**      | Smitkumar Jayendrakumar Velani                | Zhiteng Guo                                                   |
 | **Email**     | velanismitkumar@gmail.com                     | guo.zhit@northeastern.edu                                     |
 | **GitHub**    | [Smit-Velani](https://github.com/Smit-Velani) | [zhitengg7898-design](https://github.com/zhitengg7898-design) |
@@ -238,7 +237,7 @@ The database is seeded with 1000+ synthetic records.
 ## 🤖 GenAI Tools
 
 | Tool   | Provider  | Usage                                                      |
-| ------ | --------- | --------------------------------------------------------- |
+| ------ | --------- | ---------------------------------------------------------- |
 | Claude | Anthropic | Frontend development assistance, documentation, deployment |
 
 **How it was used:**
@@ -273,7 +272,6 @@ The full design document including project description, user personas, user stor
 ## 🎤 Presentation
 
 📊 [View the project slides](https://docs.google.com/presentation/d/1ZNfEQ9SBFo-LG8-YNbBElUfMsbKZkHrk/edit?usp=sharing)
-
 
 ---
 

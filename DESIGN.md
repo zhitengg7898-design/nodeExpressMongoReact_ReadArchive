@@ -13,13 +13,13 @@ We built ReadArchive because information about books and research papers is ofte
 
 **Tech Stack**
 
-| Layer          | Technology                                             |
+| Layer          | Technology                                            |
 | -------------- | ----------------------------------------------------- |
-| Backend        | Node.js, Express                                       |
-| Frontend       | React with Hooks, Vite (client-side rendered)          |
-| Database       | MongoDB (native Node.js driver — no Mongoose)          |
-| Authentication | Passport.js (passport-local), express-session, bcrypt  |
-| Deployment     | Render                                                  |
+| Backend        | Node.js, Express                                      |
+| Frontend       | React with Hooks, Vite (client-side rendered)         |
+| Database       | MongoDB (native Node.js driver — no Mongoose)         |
+| Authentication | Passport.js (passport-local), express-session, bcrypt |
+| Deployment     | Render                                                |
 
 ---
 
@@ -88,7 +88,7 @@ The application uses **two MongoDB collections**, both supporting full CRUD oper
 
 ### CRUD Coverage
 
-| Operation | Actions                                                                        |
+| Operation | Actions                                                                       |
 | --------- | ----------------------------------------------------------------------------- |
 | Create    | Register / Log in · Submit a new entry · Add to favorites · Create collection |
 | Read      | Search & list entries · View entry details · View favorites & collections     |
@@ -232,4 +232,4 @@ The application uses **two MongoDB collections**, both supporting full CRUD oper
 
 ---
 
-*ReadArchive · CS5610 Web Development · Northeastern University · July 2026*
+_ReadArchive · CS5610 Web Development · Northeastern University · July 2026_
