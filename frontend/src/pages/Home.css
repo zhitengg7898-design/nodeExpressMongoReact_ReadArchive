@@ -1,127 +1,161 @@
 ﻿.home {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
+  width: 100%;
 }
 
+/* Hero */
 .home-hero {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: var(--space-7);
 }
 
 .home-hero h1 {
-  font-size: 2.5rem;
-  margin: 0 0 0.5rem;
-  color: #0f172a;
+  margin-bottom: var(--space-3);
 }
 
-.home-hero p {
-  color: #64748b;
-  margin: 0 0 1.5rem;
+.home-tagline {
+  color: var(--color-ink-soft);
   font-size: 1.05rem;
+  max-width: 46ch;
+  margin: 0 auto var(--space-5);
 }
 
+/* Search */
 .home-search {
   display: flex;
-  gap: 0.5rem;
-  max-width: 600px;
-  margin: 0 auto 1rem;
+  gap: var(--space-2);
+  max-width: 620px;
+  margin: 0 auto var(--space-4);
 }
 
 .home-search input {
   flex: 1;
-  padding: 0.75rem 1rem;
-  border: 1px solid #c7d2fe;
-  border-radius: 8px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
   font-size: 1rem;
-  background: white;
-  color: #0f172a;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-sm);
+}
+
+.home-search input::placeholder {
+  color: var(--color-ink-muted);
 }
 
 .home-search input:focus {
   outline: none;
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.16);
 }
 
 .home-search button {
-  padding: 0.75rem 1.5rem;
-  background: #4f46e5;
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-approve);
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-size: 1rem;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s;
 }
 
 .home-search button:hover {
-  background: #4338ca;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  background: var(--color-approve-hover);
+  box-shadow: var(--shadow-md);
 }
 
+/* Type filters */
 .home-filters {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--space-2);
   justify-content: center;
   flex-wrap: wrap;
 }
 
 .home-filters button {
-  padding: 0.4rem 1rem;
-  background: #fff;
-  border: 1px solid #c7d2fe;
-  border-radius: 20px;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
   font-size: 0.9rem;
-  cursor: pointer;
-  color: #0f172a;
-  transition: all 0.2s;
+  color: var(--color-ink);
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s;
 }
 
 .home-filters button:hover {
-  border-color: #a5b4fc;
-  background: #f1f5f9;
+  border-color: var(--color-primary-border);
+  background: var(--color-primary-soft);
 }
 
 .home-filters button.active {
-  background: #4f46e5;
+  background: var(--color-primary);
   color: #fff;
-  border-color: #4f46e5;
+  border-color: var(--color-primary);
+  font-weight: 600;
 }
 
+/* Status messages */
 .home-status {
   text-align: center;
-  color: #64748b;
-  padding: 2rem;
+  color: var(--color-ink-muted);
+  padding: var(--space-6);
 }
 
 .home-error {
-  color: #dc2626;
+  color: var(--color-danger);
 }
 
+.home-count {
+  text-align: center;
+  color: var(--color-ink-muted);
+  font-size: 0.9rem;
+  margin-bottom: var(--space-4);
+}
+
+/* Results grid */
 .home-grid {
+  list-style: none;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: var(--space-5);
 }
 
+.home-grid > li {
+  display: flex;
+}
+
+.home-grid > li > * {
+  width: 100%;
+}
+
+/* Load more */
 .home-loadmore {
   text-align: center;
-  margin-top: 2rem;
+  margin-top: var(--space-6);
 }
 
 .home-loadmore button {
-  padding: 0.75rem 2rem;
-  background: #4f46e5;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--radius-sm);
   font-size: 1rem;
   font-weight: 600;
-  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
 }
 
 .home-loadmore button:hover {
-  background: #4338ca;
+  background: var(--color-primary);
+  color: #fff;
+  box-shadow: var(--shadow-md);
 }

@@ -1,247 +1,321 @@
 .col {
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 2rem 1.5rem;
+}
+
+.col-header {
+  margin-bottom: var(--space-5);
 }
 
 .col-title {
-  font-size: 1.8rem;
-  color: #0f172a;
-  margin: 0 0 1.5rem;
+  margin: 0 0 var(--space-2);
 }
+
+.col-subtitle {
+  color: var(--color-ink-muted);
+  font-size: 0.95rem;
+  max-width: 62ch;
+  margin: 0;
+}
+
+/* ---------- Create form ---------- */
 
 .col-form {
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
 }
 
 .col-form input {
   flex: 1;
-  padding: 0.7rem 1rem;
-  border: 1px solid #c7d2fe;
-  border-radius: 8px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
   font-size: 0.95rem;
-  background: white;
-  color: #0f172a;
+  background: var(--color-surface);
+  color: var(--color-ink);
 }
 
 .col-form input:focus {
   outline: none;
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.16);
 }
 
 .col-form button {
-  padding: 0.7rem 1.5rem;
-  background: #4f46e5;
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-approve);
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s;
 }
 
 .col-form button:hover {
-  background: #4338ca;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  background: var(--color-approve-hover);
+  box-shadow: var(--shadow-md);
 }
 
 .col-error {
-  color: #dc2626;
-  margin-bottom: 1rem;
+  color: var(--color-danger);
+  margin-bottom: var(--space-4);
 }
 
 .col-status {
   text-align: center;
-  padding: 3rem;
-  color: #64748b;
+  padding: var(--space-7);
+  color: var(--color-ink-muted);
 }
 
+.col-status a {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* ---------- Collection cards ---------- */
+
 .col-list {
+  list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--space-4);
 }
 
 .col-card {
-  background: #fff;
-  border: 1px solid #c7d2fe;
-  border-radius: 10px;
-  padding: 1.25rem;
-  transition: all 0.2s;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s;
 }
 
 .col-card:hover {
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.12);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary-border);
 }
 
 .col-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
 }
 
-.col-card-header h3 {
+.col-card-title {
   margin: 0;
-  color: #0f172a;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 .col-card-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--space-2);
 }
 
 .col-card-actions button {
-  padding: 0.4rem 0.8rem;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
+  padding: var(--space-2) var(--space-3);
   border-radius: 6px;
   font-size: 0.85rem;
-  cursor: pointer;
-  color: #0f172a;
-  transition: all 0.2s;
-}
-
-.col-card-actions button:hover {
-  background: #e2e8f0;
-  border-color: #cbd5e1;
+  font-weight: 600;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
 }
 
 .col-rename-btn {
-  background: #eef2ff;
-  color: #4338ca !important;
-  border: 1px solid #c7d2fe;
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  border: 1px solid var(--color-primary-border);
 }
 
 .col-rename-btn:hover {
-  background: #e0e7ff;
-  border-color: #a5b4fc;
+  background: #e3e8ff;
+  border-color: var(--color-primary);
 }
 
 .col-delete-btn {
-  background: #fee2e2;
-  color: #dc2626 !important;
-  border: 1px solid #fca5a5;
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+  border: 1px solid #f3bcbc;
 }
 
 .col-delete-btn:hover {
-  background: #fecaca;
-  border-color: #f87171;
+  background: #fce4e4;
+  border-color: var(--color-danger);
 }
+
+/* ---------- Rename ---------- */
 
 .col-rename-input {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--space-2);
   flex: 1;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .col-rename-input input {
   flex: 1;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #4f46e5;
+  min-width: 180px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-primary);
   border-radius: 6px;
+  font-family: var(--font-body);
   font-size: 0.95rem;
-  background: white;
-  color: #0f172a;
+  background: var(--color-surface);
+  color: var(--color-ink);
 }
 
 .col-rename-input input:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.16);
 }
 
 .col-confirm-btn,
 .col-cancel-btn {
-  padding: 0.4rem 0.6rem;
-  border: none;
+  padding: var(--space-2) var(--space-3);
   border-radius: 6px;
-  font-size: 0.95rem;
-  cursor: pointer;
+  font-size: 0.9rem;
   font-weight: 600;
-  transition: all 0.2s;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
 }
 
+/* Save is the approve colour, Cancel is neutral, never red */
 .col-confirm-btn {
-  background: #eef2ff;
-  color: #4338ca;
-  border: 1px solid #c7d2fe;
+  background: var(--color-approve);
+  color: #fff;
+  border: 1px solid var(--color-approve);
 }
 
 .col-confirm-btn:hover {
-  background: #e0e7ff;
-  border-color: #a5b4fc;
+  background: var(--color-approve-hover);
 }
 
 .col-cancel-btn {
-  background: #fee2e2;
-  color: #dc2626;
-  border: 1px solid #fca5a5;
+  background: var(--color-surface-raised);
+  color: var(--color-cancel);
+  border: 1px solid var(--color-border);
 }
 
 .col-cancel-btn:hover {
-  background: #fecaca;
-  border-color: #f87171;
+  background: #f0eee9;
+  border-color: var(--color-cancel);
 }
 
-.col-delete {
-  color: #dc2626 !important;
-}
+/* ---------- Books in a collection ---------- */
 
 .col-count {
-  color: #64748b;
+  color: var(--color-ink-muted);
   font-size: 0.85rem;
-  margin: 0.75rem 0;
+  margin: var(--space-3) 0;
   font-weight: 500;
 }
 
 .col-books {
+  list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin: 1rem 0 0;
-  padding: 0;
+  gap: var(--space-2);
+  margin: var(--space-4) 0 0;
 }
 
 .col-book-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem;
-  background: #f8fafc;
-  border-radius: 6px;
-  border: 1px solid #c7d2fe;
-  transition: all 0.2s;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition:
+    background 0.2s,
+    border-color 0.2s;
 }
+
+.col-book-item:hover {
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary-border);
+}
+
+.col-book-link {
+  flex: 1;
+  color: var(--color-ink);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.col-book-link:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.col-remove-book-btn {
+  padding: var(--space-1) var(--space-3);
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+  border: 1px solid #f3bcbc;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  flex-shrink: 0;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.col-remove-book-btn:hover {
+  background: #fce4e4;
+  border-color: var(--color-danger);
+}
+
+.col-empty {
+  color: var(--color-ink-muted);
+  font-size: 0.9rem;
+  margin: var(--space-4) 0 0;
+  font-style: italic;
+}
+
+/* ---------- Confirmation dialogs ---------- */
 
 .col-delete-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background: rgba(23, 32, 58, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: var(--space-4);
 }
 
 .col-delete-confirmation {
-  background: white;
-  border-radius: 12px;
-  padding: 2rem;
-  max-width: 320px;
-  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.2);
-  animation: slideUp 0.3s ease-out;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  max-width: 440px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.25s ease-out;
 }
 
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -249,90 +323,62 @@
   }
 }
 
-.col-delete-confirmation h3 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.1rem;
-  color: #0f172a;
+.col-delete-confirmation h2 {
+  margin: 0 0 var(--space-3);
+  font-size: 1.2rem;
 }
 
 .col-delete-confirmation p {
-  margin: 0 0 1.5rem 0;
-  color: #64748b;
-  font-size: 0.9rem;
+  margin: 0 0 var(--space-5);
+  color: var(--color-ink-soft);
+  font-size: 0.95rem;
 }
 
 .col-delete-buttons {
   display: flex;
-  gap: 0.75rem;
+  gap: var(--space-3);
   justify-content: flex-end;
 }
 
 .col-delete-confirm-btn,
 .col-delete-cancel-btn {
-  padding: 0.6rem 1.2rem;
+  padding: var(--space-3) var(--space-5);
   border: none;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s;
 }
 
 .col-delete-confirm-btn {
-  background: #dc2626;
-  color: white;
+  background: var(--color-danger);
+  color: #fff;
 }
 
 .col-delete-confirm-btn:hover {
-  background: #b91c1c;
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  background: var(--color-danger-hover);
+  box-shadow: var(--shadow-md);
 }
 
 .col-delete-cancel-btn {
-  background: #f1f5f9;
-  color: #0f172a;
-  border: 1px solid #e2e8f0;
+  background: var(--color-surface-raised);
+  color: var(--color-ink);
+  border: 1px solid var(--color-border);
 }
 
 .col-delete-cancel-btn:hover {
-  background: #e2e8f0;
+  background: #f0eee9;
+  border-color: var(--color-cancel);
 }
 
-.col-book-item:hover {
-  background: #eef2ff;
-}
+@media (max-width: 600px) {
+  .col-form {
+    flex-direction: column;
+  }
 
-.col-book-link {
-  flex: 1;
-  color: #4f46e5;
-  text-decoration: none;
-  font-size: 0.9rem;
-  word-break: break-word;
-}
-
-.col-book-link:hover {
-  text-decoration: underline;
-}
-
-.col-remove-book-btn {
-  padding: 0.25rem 0.5rem;
-  background: #fee2e2;
-  color: #b91c1c;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  flex-shrink: 0;
-  margin-left: 0.5rem;
-}
-
-.col-remove-book-btn:hover {
-  background: #fecaca;
-}
-
-.col-empty {
-  color: #9ca3af;
-  font-size: 0.9rem;
-  margin: 1rem 0 0;
-  font-style: italic;
+  .col-card-header {
+    align-items: flex-start;
+  }
 }

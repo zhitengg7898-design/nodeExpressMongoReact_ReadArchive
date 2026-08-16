@@ -186,15 +186,13 @@ router.post("/:id/supplement-links", auth, async (req, res) => {
     createdAt: new Date(),
   };
 
-  await db
-    .collection("books")
-    .updateOne(
-      { _id: bookId },
-      {
-        $push: { supplementLinks: supplementLink },
-        $set: { updatedAt: new Date() },
-      },
-    );
+  await db.collection("books").updateOne(
+    { _id: bookId },
+    {
+      $push: { supplementLinks: supplementLink },
+      $set: { updatedAt: new Date() },
+    },
+  );
 
   const updated = await db.collection("books").findOne({ _id: bookId });
   res.status(201).json(updated);
@@ -231,15 +229,13 @@ router.delete("/:id/supplement-links/:linkId", auth, async (req, res) => {
       .json({ message: "Not authorized to delete this link" });
   }
 
-  await db
-    .collection("books")
-    .updateOne(
-      { _id: bookId },
-      {
-        $pull: { supplementLinks: { _id: linkId } },
-        $set: { updatedAt: new Date() },
-      },
-    );
+  await db.collection("books").updateOne(
+    { _id: bookId },
+    {
+      $pull: { supplementLinks: { _id: linkId } },
+      $set: { updatedAt: new Date() },
+    },
+  );
 
   const updated = await db.collection("books").findOne({ _id: bookId });
   res.json(updated);

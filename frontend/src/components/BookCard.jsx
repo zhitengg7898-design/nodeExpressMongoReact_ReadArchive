@@ -5,14 +5,14 @@ import "./BookCard.css";
 
 function colorFromTitle(title) {
   const colors = [
-    "#4f46e5",
-    "#0891b2",
-    "#be123c",
-    "#15803d",
-    "#b45309",
-    "#7c3aed",
-    "#0f766e",
-    "#a21caf",
+    "#3730a3",
+    "#0b5c6e",
+    "#8f1035",
+    "#12662f",
+    "#8a4008",
+    "#5b21b6",
+    "#0c5f59",
+    "#701a75",
   ];
   let sum = 0;
   for (let i = 0; i < title.length; i++) sum += title.charCodeAt(i);
@@ -31,12 +31,13 @@ function BookCard({ book }) {
   };
 
   return (
-    <Link to={`/books/${book._id}`} className="book-card">
+    <article className="book-card">
       <div className="book-card-cover">
         {showImage ? (
           <img
             src={book.coverImage}
-            alt={book.title}
+            alt=""
+            loading="lazy"
             onError={() => setImgFailed(true)}
             onLoad={handleLoad}
           />
@@ -44,20 +45,28 @@ function BookCard({ book }) {
           <div
             className="book-card-textcover"
             style={{ background: colorFromTitle(book.title) }}
+            aria-hidden="true"
           >
             <span className="book-card-textcover-title">{book.title}</span>
             <span className="book-card-textcover-author">{book.author}</span>
           </div>
         )}
       </div>
+
       <div className="book-card-body">
         <span className={`book-card-type book-card-type-${book.type}`}>
           {book.type}
         </span>
-        <h3 className="book-card-title">{book.title}</h3>
-        <p className="book-card-author">{book.author}</p>
+
+        <h2 className="book-card-title">
+          <Link to={`/books/${book._id}`} className="book-card-link">
+            {book.title}
+          </Link>
+        </h2>
+
+        {book.author && <p className="book-card-author">{book.author}</p>}
       </div>
-    </Link>
+    </article>
   );
 }
 

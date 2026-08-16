@@ -161,7 +161,7 @@ function BookDetail() {
 
           {user ? (
             <div className="detail-full-text-section">
-              <h3 className="detail-full-text-header">Full Text</h3>
+              <h2 className="detail-full-text-header">Full Text</h2>
 
               {(book.links && book.links.length > 0) ||
               (book.supplementLinks && book.supplementLinks.length > 0) ? (
@@ -257,7 +257,7 @@ function BookDetail() {
                 </div>
               ) : null}
 
-              <h3 className="detail-actions-header">Actions</h3>
+              <h2 className="detail-actions-header">Actions</h2>
 
               <div className="detail-actions">
                 <button

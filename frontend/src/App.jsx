@@ -12,16 +12,33 @@ import "./App.css";
 function App() {
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/books/:id" element={<BookDetail />} />
-        <Route path="/favorites" element={<Favorites />} />
-        <Route path="/collections" element={<Collections />} />
-        <Route path="/submit" element={<SubmitEntry />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
+      <div className="app-shell">
+        <a className="skip-link" href="#main-content">
+          Skip to main content
+        </a>
+
+        <Navbar />
+
+        <main className="app-main" id="main-content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/books/:id" element={<BookDetail />} />
+            <Route path="/favorites" element={<Favorites />} />
+            <Route path="/collections" element={<Collections />} />
+            <Route path="/submit" element={<SubmitEntry />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </main>
+
+        <footer className="app-footer">
+          <p>
+            ReadArchive :- a community reading archive. Browse and open
+            resources freely, or create an account to post entries, save
+            favorites and build collections.
+          </p>
+        </footer>
+      </div>
     </Router>
   );
 }

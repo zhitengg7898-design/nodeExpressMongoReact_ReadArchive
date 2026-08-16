@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { api } from "../api/client";
 import { useAuth } from "../context/AuthContext";
 import "./Collections.css";
@@ -12,6 +13,7 @@ function Collections() {
   const [renamingId, setRenamingId] = useState(null);
   const [renameValue, setRenameValue] = useState("");
   const [deletingColId, setDeletingColId] = useState(null);
+  const [removingBook, setRemovingBook] = useState(null);
 
   const load = async () => {
     setLoading(true);
@@ -80,6 +82,7 @@ function Collections() {
   };
 
   const removeBookFromCollection = async (colId, bookId) => {
+    setRemovingBook(null);
     try {
       await api.put(`/users/collections/${colId}`, { removeBook: bookId });
       load();
@@ -90,18 +93,32 @@ function Collections() {
 
   if (!user)
     return (
-      <p className="col-status">Please log in to view your collections.</p>
+      <p className="col-status">
+        Please <Link to="/login">log in</Link> to view your collections.
+      </p>
     );
-  if (loading) return <p className="col-status">Loading...</p>;
+  if (loading) return <p className="col-status">Loading your collections...</p>;
+
+  const colPendingDelete = collections.find((c) => c._id === deletingColId);
 
   return (
     <div className="col">
-      <h1 className="col-title">My Collections</h1>
+      <header className="col-header">
+        <h1 className="col-title">My Collections</h1>
+        <p className="col-subtitle">
+          Collections are named lists you create, for example a reading list for
+          one course. To save an entry to a single list instead, use Favorites.
+        </p>
+      </header>
 
       <form className="col-form" onSubmit={createCollection}>
+        <label className="visually-hidden" htmlFor="new-collection">
+          New collection name
+        </label>
         <input
+          id="new-collection"
           type="text"
-          placeholder="New collection name..."
+          placeholder="New collection name, for example ML Reading List"
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
           required
@@ -109,18 +126,34 @@ function Collections() {
         <button type="submit">Create Collection</button>
       </form>
 
-      {error && <p className="col-error">{error}</p>}
+      <div aria-live="polite">
+        {error && (
+          <p className="col-error" role="alert">
+            {error}
+          </p>
+        )}
+      </div>
 
       {collections.length === 0 ? (
-        <p className="col-status">No collections yet. Create one above!</p>
+        <p className="col-status">
+          No collections yet. Create one above, then open any entry and choose
+          Add to Collection.
+        </p>
       ) : (
-        <div className="col-list">
+        <ul className="col-list">
           {collections.map((col) => (
-            <div key={col._id} className="col-card">
+            <li key={col._id} className="col-card">
               <div className="col-card-header">
                 {renamingId === col._id ? (
                   <div className="col-rename-input">
+                    <label
+                      className="visually-hidden"
+                      htmlFor={`rename-${col._id}`}
+                    >
+                      New name for {col.name}
+                    </label>
                     <input
+                      id={`rename-${col._id}`}
                       type="text"
                       value={renameValue}
                       onChange={(e) => setRenameValue(e.target.value)}
@@ -143,12 +176,13 @@ function Collections() {
                   </div>
                 ) : (
                   <>
-                    <h3>{col.name}</h3>
+                    <h2 className="col-card-title">{col.name}</h2>
                     <div className="col-card-actions">
                       <button
                         type="button"
                         className="col-rename-btn"
                         onClick={() => startRename(col._id, col.name)}
+                        aria-label={`Rename the collection ${col.name}`}
                       >
                         Rename
                       </button>
@@ -156,6 +190,7 @@ function Collections() {
                         type="button"
                         className="col-delete-btn"
                         onClick={() => deleteCollection(col._id)}
+                        aria-label={`Delete the collection ${col.name}`}
                       >
                         Delete
                       </button>
@@ -163,56 +198,117 @@ function Collections() {
                   </>
                 )}
               </div>
+
               <p className="col-count">
-                {col.books.length} {col.books.length === 1 ? "book" : "books"}
+                {col.books.length}{" "}
+                {col.books.length === 1 ? "entry" : "entries"}
               </p>
+
               {col.books.length > 0 ? (
-                <div className="col-books">
+                <ul className="col-books">
                   {col.books.map((book) => (
-                    <div key={book._id} className="col-book-item">
-                      <a href={`/books/${book._id}`} className="col-book-link">
+                    <li key={book._id} className="col-book-item">
+                      <Link to={`/books/${book._id}`} className="col-book-link">
                         {book.title}
-                      </a>
+                      </Link>
                       <button
                         type="button"
                         className="col-remove-book-btn"
                         onClick={() =>
-                          removeBookFromCollection(col._id, book._id)
+                          setRemovingBook({
+                            colId: col._id,
+                            colName: col.name,
+                            bookId: book._id,
+                            bookTitle: book.title,
+                          })
                         }
-                        title="Remove from collection"
+                        aria-label={`Remove ${book.title} from ${col.name}`}
                       >
-                        ×
+                        Remove
                       </button>
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               ) : (
-                <p className="col-empty">No books in this collection yet</p>
+                <p className="col-empty">
+                  No entries in this collection yet. Open an entry and choose
+                  Add to Collection.
+                </p>
               )}
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
 
-      {deletingColId && (
+      {colPendingDelete && (
         <div className="col-delete-overlay">
-          <div className="col-delete-confirmation">
-            <h3>Delete Collection?</h3>
-            <p>This action cannot be undone.</p>
+          <div
+            className="col-delete-confirmation"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="col-delete-title"
+          >
+            <h2 id="col-delete-title">
+              Delete &quot;{colPendingDelete.name}&quot;?
+            </h2>
+            <p>
+              This collection holds {colPendingDelete.books.length}{" "}
+              {colPendingDelete.books.length === 1 ? "entry" : "entries"}. The
+              collection will be removed, but the entries stay in the archive.
+              This cannot be undone.
+            </p>
             <div className="col-delete-buttons">
-              <button
-                type="button"
-                className="col-delete-confirm-btn"
-                onClick={confirmDelete}
-              >
-                Delete
-              </button>
               <button
                 type="button"
                 className="col-delete-cancel-btn"
                 onClick={() => setDeletingColId(null)}
               >
                 Cancel
+              </button>
+              <button
+                type="button"
+                className="col-delete-confirm-btn"
+                onClick={confirmDelete}
+              >
+                Delete collection
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {removingBook && (
+        <div className="col-delete-overlay">
+          <div
+            className="col-delete-confirmation"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="col-remove-title"
+          >
+            <h2 id="col-remove-title">Remove this entry?</h2>
+            <p>
+              Remove &quot;{removingBook.bookTitle}&quot; from{" "}
+              {removingBook.colName}? The entry stays in the archive.
+            </p>
+            <div className="col-delete-buttons">
+              <button
+                type="button"
+                className="col-delete-cancel-btn"
+                onClick={() => setRemovingBook(null)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="col-delete-confirm-btn"
+                onClick={() =>
+                  removeBookFromCollection(
+                    removingBook.colId,
+                    removingBook.bookId,
+                  )
+                }
+              >
+                Remove entry
               </button>
             </div>
           </div>

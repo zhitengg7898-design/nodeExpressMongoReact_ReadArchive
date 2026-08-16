@@ -9,6 +9,7 @@ function Home() {
   const [typeFilter, setTypeFilter] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -26,6 +27,7 @@ function Home() {
         setBooks((prev) => (append ? [...prev, ...data.books] : data.books));
         setTotalPages(data.pages);
         setPage(data.page);
+        if (typeof data.total === "number") setTotal(data.total);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -50,22 +52,39 @@ function Home() {
 
   return (
     <div className="home">
-      <div className="home-hero">
-        <h1>ReadArchive</h1>
-        <p>Search, save, and share books and articles</p>
-        <form className="home-search" onSubmit={handleSearch}>
+      <section className="home-hero" aria-labelledby="home-title">
+        <h1 id="home-title">Find your next read</h1>
+        <p className="home-tagline">
+          Search a shared archive of books and articles, open the resources
+          freely, and keep the ones you like.
+        </p>
+
+        <form
+          className="home-search"
+          onSubmit={handleSearch}
+          role="search"
+          aria-label="Search the archive"
+        >
+          <label className="visually-hidden" htmlFor="home-search-input">
+            Search by title, author, keyword or ISBN
+          </label>
           <input
-            type="text"
-            placeholder="Search by title, author, or keyword..."
+            id="home-search-input"
+            type="search"
+            placeholder="Search by title, author, keyword or ISBN..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <button type="submit">Search</button>
+          <button type="submit" className="btn-approve">
+            Search
+          </button>
         </form>
-        <div className="home-filters">
+
+        <div className="home-filters" role="group" aria-label="Filter by type">
           <button
             type="button"
             className={typeFilter === "" ? "active" : ""}
+            aria-pressed={typeFilter === ""}
             onClick={() => setTypeFilter("")}
           >
             All
@@ -73,6 +92,7 @@ function Home() {
           <button
             type="button"
             className={typeFilter === "book" ? "active" : ""}
+            aria-pressed={typeFilter === "book"}
             onClick={() => setTypeFilter("book")}
           >
             Books
@@ -80,30 +100,49 @@ function Home() {
           <button
             type="button"
             className={typeFilter === "article" ? "active" : ""}
+            aria-pressed={typeFilter === "article"}
             onClick={() => setTypeFilter("article")}
           >
             Articles
           </button>
         </div>
+      </section>
+
+      <div aria-live="polite">
+        {error && (
+          <p className="home-status home-error" role="alert">
+            {error}
+          </p>
+        )}
+
+        {!loading && !error && books.length === 0 && (
+          <p className="home-status">
+            No results found. Try a shorter word, or a different spelling.
+          </p>
+        )}
+
+        {!loading && !error && books.length > 0 && (
+          <p className="home-count">
+            Showing {books.length}
+            {total > 0 ? ` of ${total}` : ""} entries
+          </p>
+        )}
       </div>
 
-      {error && <p className="home-status home-error">{error}</p>}
-      {!loading && !error && books.length === 0 && (
-        <p className="home-status">No results found.</p>
-      )}
-
-      <div className="home-grid">
+      <ul className="home-grid">
         {books.map((book) => (
-          <BookCard key={book._id} book={book} />
+          <li key={book._id}>
+            <BookCard book={book} />
+          </li>
         ))}
-      </div>
+      </ul>
 
-      {loading && <p className="home-status">Loading...</p>}
+      {loading && <p className="home-status">Loading entries...</p>}
 
       {!loading && page < totalPages && (
         <div className="home-loadmore">
           <button type="button" onClick={loadMore}>
-            Load More
+            Load more entries
           </button>
         </div>
       )}

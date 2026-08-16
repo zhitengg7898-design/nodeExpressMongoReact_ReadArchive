@@ -1,19 +1,166 @@
+/* ============================================================
+   ReadArchive :- global design tokens and base styles
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  /* Brand */
+  --color-primary: #4338ca;
+  --color-primary-dark: #3730a3;
+  --color-primary-soft: #eef2ff;
+  --color-primary-border: #c7d2fe;
+
+  /* Approve and cancel, used the same way across the whole app */
+  --color-approve: #4338ca;
+  --color-approve-hover: #3730a3;
+  --color-cancel: #4f5a6b;
+  --color-cancel-hover: #3c4757;
+  --color-danger: #c81e1e;
+  --color-danger-hover: #a11616;
+  --color-danger-soft: #fef2f2;
+
+  /* Text */
+  --color-ink: #17203a;
+  --color-ink-soft: #3d4759;
+  --color-ink-muted: #5c6472;
+
+  /* Surfaces */
+  --color-surface: #ffffff;
+  --color-surface-raised: #fbfaf7;
+  --color-border: #e3e0d8;
+
+  /* Type */
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  /* Spacing scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  --shadow-sm: 0 1px 2px rgba(23, 32, 58, 0.06);
+  --shadow-md: 0 4px 16px rgba(23, 32, 58, 0.08);
+  --shadow-lg: 0 12px 32px rgba(23, 32, 58, 0.1);
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
-    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 html,
 body,
 #root {
   height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Warm paper background with soft ink washes */
+  background-color: #f7f5f0;
+  background-image:
+    radial-gradient(
+      circle at 12% 8%,
+      rgba(67, 56, 202, 0.1) 0%,
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 88% 4%,
+      rgba(217, 119, 87, 0.09) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 78% 92%,
+      rgba(67, 56, 202, 0.07) 0%,
+      transparent 45%
+    );
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/* Headings use the display face */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  color: var(--color-ink);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+h1 {
+  font-size: clamp(2rem, 4vw, 2.9rem);
+  font-weight: 700;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+p {
+  color: var(--color-ink-soft);
+}
+
+/* Visible focus for every keyboard user */
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Shared button behaviour */
+button {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Text available to screen readers only */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

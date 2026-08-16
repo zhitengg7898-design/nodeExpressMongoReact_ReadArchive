@@ -19,6 +19,8 @@ function SubmitEntry() {
   const [linkLabel, setLinkLabel] = useState("");
   const [linkUrl, setLinkUrl] = useState("");
   const [error, setError] = useState("");
+  const [coverFailed, setCoverFailed] = useState(false);
+  const [pendingDelete, setPendingDelete] = useState(null);
 
   const loadUserPosts = async () => {
     if (!user) {
@@ -45,7 +47,9 @@ function SubmitEntry() {
 
   if (!user) {
     return (
-      <p className="submit-status">Please log in to post a new book or PDF.</p>
+      <p className="submit-status">
+        Please <Link to="/login">log in</Link> to post a new book or article.
+      </p>
     );
   }
 
@@ -66,7 +70,6 @@ function SubmitEntry() {
         coverImage,
         links,
       });
-      // Reset form
       setTitle("");
       setAuthor("");
       setIsbn("");
@@ -76,7 +79,6 @@ function SubmitEntry() {
       setLinkLabel("");
       setLinkUrl("");
       setShowForm(false);
-      // Reload posts
       loadUserPosts();
       navigate(`/books/${book._id}`);
     } catch (err) {
@@ -85,6 +87,7 @@ function SubmitEntry() {
   };
 
   const deletePost = async (postId) => {
+    setPendingDelete(null);
     try {
       await api.del(`/books/${postId}`);
       setUserPosts(userPosts.filter((post) => post._id !== postId));
@@ -93,22 +96,40 @@ function SubmitEntry() {
     }
   };
 
+  const postPendingDelete = userPosts.find((p) => p._id === pendingDelete);
+
   return (
     <div className="submit">
-      <h1 className="submit-title">My Posts</h1>
+      <header className="submit-header">
+        <h1 className="submit-title">My Posts</h1>
+        <p className="submit-subtitle">
+          Entries you have added to the archive. Anyone can read them, and you
+          can remove your own at any time.
+        </p>
+      </header>
+
       <button
         type="button"
         className="submit-toggle-btn"
         onClick={() => setShowForm(!showForm)}
+        aria-expanded={showForm}
       >
-        {showForm ? "View Posts" : "Create Post"}
+        {showForm ? "View my posts" : "Create a post"}
       </button>
 
       {showForm ? (
         <form className="submit-form" onSubmit={handleSubmit}>
-          {error && <div className="submit-error">{error}</div>}
+          <div aria-live="polite">
+            {error && (
+              <div className="submit-error" role="alert">
+                {error}
+              </div>
+            )}
+          </div>
 
-          <label htmlFor="title">Title *</label>
+          <label htmlFor="title">
+            Title <span className="submit-required">required</span>
+          </label>
           <input
             id="title"
             type="text"
@@ -125,16 +146,22 @@ function SubmitEntry() {
             onChange={(e) => setAuthor(e.target.value)}
           />
 
-          <label htmlFor="isbn">ISBN (optional)</label>
+          <label htmlFor="isbn">ISBN</label>
+          <span className="submit-hint" id="isbn-hint">
+            Optional. The 13 digit number printed near the barcode.
+          </span>
           <input
             id="isbn"
             type="text"
-            placeholder="e.g. 978-0-123456-78-9"
+            placeholder="978-0-123456-78-9"
+            aria-describedby="isbn-hint"
             value={isbn}
             onChange={(e) => setIsbn(e.target.value)}
           />
 
-          <label htmlFor="type">Type *</label>
+          <label htmlFor="type">
+            Type <span className="submit-required">required</span>
+          </label>
           <select
             id="type"
             value={type}
@@ -145,39 +172,79 @@ function SubmitEntry() {
           </select>
 
           <label htmlFor="description">Description</label>
+          <span className="submit-hint" id="desc-hint">
+            Optional. A sentence or two about what this entry covers.
+          </span>
           <textarea
             id="description"
             rows="4"
+            aria-describedby="desc-hint"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
 
-          <label htmlFor="coverImage">Cover Image URL (optional)</label>
+          <label htmlFor="coverImage">Cover image URL</label>
+          <span className="submit-hint" id="cover-hint">
+            Optional. A direct web address ending in .jpg or .png. Leave it
+            blank to use a text cover.
+          </span>
           <input
             id="coverImage"
             type="url"
+            placeholder="https://example.com/cover.jpg"
+            aria-describedby="cover-hint"
             value={coverImage}
-            onChange={(e) => setCoverImage(e.target.value)}
+            onChange={(e) => {
+              setCoverImage(e.target.value);
+              setCoverFailed(false);
+            }}
           />
 
-          <label htmlFor="linkLabel">Resource Link Label (optional)</label>
+          {coverImage && (
+            <div className="submit-preview">
+              {coverFailed ? (
+                <p className="submit-preview-error">
+                  This image could not be loaded. Check the address, or leave
+                  the field blank to use a text cover.
+                </p>
+              ) : (
+                <img
+                  src={coverImage}
+                  alt="Preview of the cover image"
+                  className="submit-preview-img"
+                  onError={() => setCoverFailed(true)}
+                />
+              )}
+            </div>
+          )}
+
+          <label htmlFor="linkLabel">Resource link label</label>
+          <span className="submit-hint" id="label-hint">
+            Optional. A short name for the link, for example Free PDF.
+          </span>
           <input
             id="linkLabel"
             type="text"
-            placeholder="e.g. Free PDF, Buy on Amazon"
+            placeholder="Free PDF"
+            aria-describedby="label-hint"
             value={linkLabel}
             onChange={(e) => setLinkLabel(e.target.value)}
           />
 
-          <label htmlFor="linkUrl">Resource Link URL (optional)</label>
+          <label htmlFor="linkUrl">Resource link URL</label>
+          <span className="submit-hint" id="url-hint">
+            Optional. The full web address, starting with https.
+          </span>
           <input
             id="linkUrl"
             type="url"
+            placeholder="https://example.com/book.pdf"
+            aria-describedby="url-hint"
             value={linkUrl}
             onChange={(e) => setLinkUrl(e.target.value)}
           />
 
-          <button type="submit">Post Book/PDF</button>
+          <button type="submit">Publish entry</button>
         </form>
       ) : (
         <div className="submit-posts-section">
@@ -185,7 +252,7 @@ function SubmitEntry() {
             <p className="submit-status">Loading your posts...</p>
           ) : userPosts.length === 0 ? (
             <p className="submit-status">
-              You haven't posted any books yet.{" "}
+              You have not posted any entries yet.{" "}
               <button
                 type="button"
                 className="submit-create-link"
@@ -195,15 +262,18 @@ function SubmitEntry() {
               </button>
             </p>
           ) : (
-            <div className="submit-posts-list">
+            <ul className="submit-posts-list">
               {userPosts.map((post) => (
-                <div
-                  key={post._id}
-                  className="submit-post-item"
-                  onClick={() => navigate(`/books/${post._id}`)}
-                >
+                <li key={post._id} className="submit-post-item">
                   <div className="submit-post-info">
-                    <h3>{post.title}</h3>
+                    <h2 className="submit-post-title">
+                      <Link
+                        to={`/books/${post._id}`}
+                        className="submit-post-link"
+                      >
+                        {post.title}
+                      </Link>
+                    </h2>
                     {post.author && (
                       <p className="submit-post-author">by {post.author}</p>
                     )}
@@ -219,22 +289,54 @@ function SubmitEntry() {
                       {post.description}
                     </p>
                   </div>
+
                   <div className="submit-post-actions">
                     <button
                       type="button"
                       className="submit-post-delete-btn"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        deletePost(post._id);
-                      }}
+                      onClick={() => setPendingDelete(post._id)}
+                      aria-label={`Delete the entry ${post.title}`}
                     >
-                      ×
+                      Delete
                     </button>
                   </div>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           )}
+        </div>
+      )}
+
+      {postPendingDelete && (
+        <div className="submit-overlay">
+          <div
+            className="submit-confirm"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="submit-confirm-title"
+          >
+            <h2 id="submit-confirm-title">Delete this entry?</h2>
+            <p>
+              &quot;{postPendingDelete.title}&quot; will be removed from the
+              archive for everyone. This cannot be undone.
+            </p>
+            <div className="submit-confirm-actions">
+              <button
+                type="button"
+                className="submit-cancel-btn"
+                onClick={() => setPendingDelete(null)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="submit-confirm-btn"
+                onClick={() => deletePost(postPendingDelete._id)}
+              >
+                Delete entry
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

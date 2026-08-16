@@ -1,4 +1,4 @@
-﻿import { Link } from "react-router-dom";
+﻿import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "./Navbar.css";
 
@@ -6,17 +6,27 @@ function Navbar() {
   const { user, logout } = useAuth();
 
   return (
-    <nav className="navbar">
+    <header className="navbar">
       <Link to="/" className="navbar-brand">
         ReadArchive
       </Link>
-      <div className="navbar-links">
-        <Link to="/">Home</Link>
+
+      <nav className="navbar-links" aria-label="Main navigation">
+        <NavLink to="/" end className="navbar-link">
+          Home
+        </NavLink>
+
         {user ? (
           <>
-            <Link to="/favorites">Favorites</Link>
-            <Link to="/submit">Post</Link>
-            <Link to="/collections">Collections</Link>
+            <NavLink to="/favorites" className="navbar-link">
+              Favorites
+            </NavLink>
+            <NavLink to="/submit" className="navbar-link">
+              My Posts
+            </NavLink>
+            <NavLink to="/collections" className="navbar-link">
+              Collections
+            </NavLink>
             <span className="navbar-user">Hi, {user.username}</span>
             <button type="button" onClick={logout} className="navbar-logout">
               Log Out
@@ -24,14 +34,16 @@ function Navbar() {
           </>
         ) : (
           <>
-            <Link to="/login">Log In</Link>
+            <NavLink to="/login" className="navbar-link">
+              Log In
+            </NavLink>
             <Link to="/register" className="navbar-register">
               Register
             </Link>
           </>
         )}
-      </div>
-    </nav>
+      </nav>
+    </header>
   );
 }
 
