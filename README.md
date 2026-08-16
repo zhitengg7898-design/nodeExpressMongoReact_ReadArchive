@@ -314,6 +314,11 @@ The full design document including project description, user personas, user stor
 📊 [View the project slides](https://docs.google.com/presentation/d/1ZNfEQ9SBFo-LG8-YNbBElUfMsbKZkHrk/edit?usp=sharing)
 
 ---
+## 📊 Usability Study
+
+A usability study was conducted with three participants per team member, six tasks each. The findings drove this iteration's changes, which are documented in [DESIGN.md](DESIGN.md). The full report, including participant demographics and session recordings, was submitted separately on Canvas and is not published here for participant privacy.
+
+---
 
 <p align="center">
   Built by <strong>Smitkumar Jayendrakumar Velani</strong> and <strong>Zhiteng Guo</strong> &middot; CS5610 Web Development &middot; Northeastern University &middot; August 2026
