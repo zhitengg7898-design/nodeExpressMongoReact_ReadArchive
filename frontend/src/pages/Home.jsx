@@ -1,4 +1,5 @@
 ﻿import { useState, useEffect, useCallback } from "react";
+import PropTypes from "prop-types";
 import { api } from "../api/client";
 import BookCard from "../components/BookCard";
 import "./Home.css";
@@ -34,7 +35,7 @@ function Home() {
         setLoading(false);
       }
     },
-    [query, typeFilter],
+    [query, typeFilter]
   );
 
   useEffect(() => {
@@ -149,5 +150,7 @@ function Home() {
     </div>
   );
 }
+
+Home.propTypes = {};
 
 export default Home;

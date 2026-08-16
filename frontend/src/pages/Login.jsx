@@ -1,4 +1,5 @@
 ﻿import { useState } from "react";
+import PropTypes from "prop-types";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "./Auth.css";
@@ -51,5 +52,7 @@ function Login() {
     </div>
   );
 }
+
+Login.propTypes = {};
 
 export default Login;
