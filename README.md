@@ -41,7 +41,7 @@ ReadArchive is a full-stack reading archive built with Node.js, Express, MongoDB
 
 > Live at: **https://nodeexpressmongoreact-readarchive.onrender.com**
 
-> Demo video: **ADD_YOUR_NEW_VIDEO_LINK_HERE**
+> Demo video: **https://youtu.be/yn33R8_dugs**
 
 > Note: hosted on Render's free tier — the first request after inactivity may take up to 50 seconds to wake.
 
